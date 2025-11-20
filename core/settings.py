@@ -81,13 +81,23 @@ WSGI_APPLICATION = 'core.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-# SQLite (Default - for development)
-DATABASES = {
-    'default': dj_database_url.config(
-        default=f'sqlite:///{BASE_DIR / "db.sqlite3"}',
-        conn_max_age=600
-    )
-}
+# Vercel/Serverless environment configuration
+if 'VERCEL' in os.environ:
+    # Use SQLite for Vercel (serverless functions can't maintain persistent DB connections)
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    }
+else:
+    # SQLite (Default - for development)
+    DATABASES = {
+        'default': dj_database_url.config(
+            default=f'sqlite:///{BASE_DIR / "db.sqlite3"}',
+            conn_max_age=600
+        )
+    }
 
 # MySQL Configuration (Uncomment to use MySQL)
 # DATABASES = {
