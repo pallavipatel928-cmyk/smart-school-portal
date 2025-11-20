@@ -1,0 +1,191 @@
+{% extends 'base.html' %}
+
+{% block title %}Faculty Directory - Smart School Portal{% endblock %}
+
+{% block content %}
+
+<!-- Page Header -->
+<div style="position: relative; margin: -20px -20px 30px -20px; padding: 40px 30px; background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); border-radius: 0 0 30px 30px; overflow: hidden; box-shadow: 0 10px 40px rgba(240, 147, 251, 0.3);">
+    <!-- Animated Background -->
+    <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden;">
+        <div style="position: absolute; width: 80px; height: 80px; background: rgba(255,255,255,0.1); border-radius: 50%; top: 10%; left: 5%; animation: float-particle 15s ease-in-out infinite;"></div>
+        <div style="position: absolute; width: 60px; height: 60px; background: rgba(255,255,255,0.08); border-radius: 50%; top: 60%; right: 10%; animation: float-particle 12s ease-in-out infinite 2s;"></div>
+    </div>
+    
+    <!-- Header Content -->
+    <div style="position: relative; z-index: 10; color: white;">
+        <h2 style="font-size: 42px; font-weight: 800; margin: 10px 0; text-shadow: 2px 2px 8px rgba(0,0,0,0.2); letter-spacing: -1px;">
+            <i class="fas fa-chalkboard-teacher"></i> Faculty Directory
+        </h2>
+        <p style="font-size: 18px; opacity: 0.95; margin: 10px 0;">
+            Meet our dedicated team of educators
+        </p>
+    </div>
+</div>
+
+<!-- Search Bar -->
+<div class="row mb-4">
+    <div class="col-md-12">
+        <div class="card border-0 shadow-sm" style="border-radius: 15px;">
+            <div class="card-body" style="padding: 25px;">
+                <form method="get" class="row g-3">
+                    <div class="col-md-10">
+                        <input type="text" name="search" class="form-control form-control-lg" placeholder="🔍 Search by name, email, or subject..." value="{{ search_query }}" style="border-radius: 12px; border: 2px solid #f093fb;">
+                    </div>
+                    <div class="col-md-2">
+                        <button type="submit" class="btn btn-lg w-100" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white; border: none; border-radius: 12px; font-weight: 700;">
+                            Search
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Teachers Count -->
+<div class="mb-4">
+    <h5 style="font-weight: 700; color: #666;">
+        <i class="fas fa-users"></i> Total Faculty Members: <span style="color: #f5576c;">{{ teachers.count }}</span>
+    </h5>
+</div>
+
+<!-- Teachers Grid -->
+{% if teachers %}
+    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 25px;">
+        {% for teacher in teachers %}
+            <div class="teacher-card" style="background: white; border-radius: 20px; padding: 30px; box-shadow: 0 5px 20px rgba(0,0,0,0.08); position: relative; overflow: hidden; transition: all 0.3s; border: 2px solid transparent;" onmouseover="this.style.transform='translateY(-8px)'; this.style.boxShadow='0 12px 35px rgba(240, 147, 251, 0.3)'; this.style.borderColor='#f093fb';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 5px 20px rgba(0,0,0,0.08)'; this.style.borderColor='transparent';">
+                
+                <!-- Background Decoration -->
+                <div style="position: absolute; top: -30px; right: -30px; width: 120px; height: 120px; background: linear-gradient(135deg, #f093fb15 0%, #f5576c15 100%); border-radius: 50%; opacity: 0.5;"></div>
+                
+                <!-- Teacher Avatar -->
+                <div style="position: relative; z-index: 10;">
+                    <div style="width: 100px; height: 100px; margin: 0 auto 20px auto; border-radius: 50%; background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); display: flex; align-items: center; justify-content: center; color: white; font-size: 40px; font-weight: 800; box-shadow: 0 8px 25px rgba(240, 147, 251, 0.4);">
+                        {% if teacher.user.first_name %}
+                            {{ teacher.user.first_name|slice:":1"|upper }}{{ teacher.user.last_name|slice:":1"|upper }}
+                        {% else %}
+                            {{ teacher.user.username|slice:":2"|upper }}
+                        {% endif %}
+                    </div>
+                    
+                    <!-- Teacher Info -->
+                    <div style="text-align: center;">
+                        <h5 style="font-size: 22px; font-weight: 800; color: #333; margin-bottom: 8px;">
+                            {{ teacher.user.get_full_name|default:teacher.user.username }}
+                        </h5>
+                        
+                        <p style="color: #666; font-size: 14px; margin-bottom: 15px;">
+                            <i class="fas fa-id-badge"></i> {{ teacher.employee_id|default:"N/A" }}
+                        </p>
+                        
+                        <!-- Contact Info -->
+                        <div style="background: #f8f9fa; padding: 15px; border-radius: 12px; margin-bottom: 15px; text-align: left;">
+                            <p style="font-size: 14px; margin: 5px 0; color: #555;">
+                                <i class="fas fa-envelope" style="color: #f5576c; width: 20px;"></i> {{ teacher.user.email }}
+                            </p>
+                            {% if teacher.phone %}
+                                <p style="font-size: 14px; margin: 5px 0; color: #555;">
+                                    <i class="fas fa-phone" style="color: #f5576c; width: 20px;"></i> {{ teacher.phone }}
+                                </p>
+                            {% endif %}
+                            {% if teacher.qualification %}
+                                <p style="font-size: 14px; margin: 5px 0; color: #555;">
+                                    <i class="fas fa-graduation-cap" style="color: #f5576c; width: 20px;"></i> {{ teacher.qualification }}
+                                </p>
+                            {% endif %}
+                        </div>
+                        
+                        <!-- Subjects -->
+                        <div style="margin-bottom: 15px;">
+                            <p style="font-size: 12px; font-weight: 700; color: #999; text-transform: uppercase; margin-bottom: 8px;">Teaching Subjects</p>
+                            <div style="display: flex; flex-wrap: wrap; gap: 6px; justify-content: center;">
+                                {% for subject in teacher.subjects.all %}
+                                    <span style="background: linear-gradient(135deg, #f093fb15 0%, #f5576c15 100%); color: #f5576c; padding: 5px 12px; border-radius: 15px; font-size: 12px; font-weight: 600; border: 1px solid #f093fb30;">
+                                        {{ subject.name }}
+                                    </span>
+                                {% empty %}
+                                    <span style="color: #999; font-size: 12px;">No subjects assigned</span>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        
+                        <!-- Action Buttons -->
+                        <div style="display: flex; gap: 10px; justify-content: center;">
+                            <a href="{% url 'teacher_detail' teacher.pk %}" class="btn btn-sm" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white; border: none; border-radius: 20px; padding: 8px 20px; font-weight: 700; transition: all 0.3s;" onmouseover="this.style.transform='scale(1.05)'; this.style.boxShadow='0 5px 15px rgba(240, 147, 251, 0.4)';" onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='none';">
+                                <i class="fas fa-user"></i> View Profile
+                            </a>
+                            {% if user.is_authenticated and user != teacher.user %}
+                                <a href="{% url 'send_message' %}?recipient={{ teacher.user.pk }}" class="btn btn-sm" style="background: white; color: #f5576c; border: 2px solid #f093fb; border-radius: 20px; padding: 8px 16px; font-weight: 700; transition: all 0.3s; text-decoration: none;" onmouseover="this.style.background='#f093fb15';" onmouseout="this.style.background='white';">
+                                    <i class="fas fa-envelope"></i> Message
+                                </a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% else %}
+    <!-- No Teachers Found -->
+    <div class="card border-0 shadow-sm" style="border-radius: 20px;">
+        <div class="card-body text-center" style="padding: 80px 40px;">
+            <i class="fas fa-user-slash" style="font-size: 64px; color: #ddd; margin-bottom: 20px;"></i>
+            <h5 style="color: #666; font-size: 20px; margin-bottom: 15px;">No Teachers Found</h5>
+            <p style="color: #999;">No faculty members match your search criteria.</p>
+            {% if search_query %}
+                <a href="{% url 'teacher_list' %}" class="btn mt-3" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white; border: none; border-radius: 20px; padding: 12px 30px; font-weight: 700;">
+                    <i class="fas fa-undo"></i> Clear Search
+                </a>
+            {% endif %}
+        </div>
+    </div>
+{% endif %}
+
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    @keyframes float-particle {
+        0%, 100% {
+            transform: translate(0, 0) scale(1);
+            opacity: 0.6;
+        }
+        25% {
+            transform: translate(30px, -30px) scale(1.1);
+            opacity: 0.8;
+        }
+        50% {
+            transform: translate(0, -60px) scale(1);
+            opacity: 1;
+        }
+        75% {
+            transform: translate(-30px, -30px) scale(0.9);
+            opacity: 0.8;
+        }
+    }
+    
+    .teacher-card {
+        animation: slideInUp 0.5s ease-out;
+    }
+    
+    @keyframes slideInUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    /* Stagger animation for cards */
+    .teacher-card:nth-child(1) { animation-delay: 0.1s; }
+    .teacher-card:nth-child(2) { animation-delay: 0.2s; }
+    .teacher-card:nth-child(3) { animation-delay: 0.3s; }
+    .teacher-card:nth-child(4) { animation-delay: 0.4s; }
+    .teacher-card:nth-child(5) { animation-delay: 0.5s; }
+    .teacher-card:nth-child(6) { animation-delay: 0.6s; }
+</style>
+{% endblock %}

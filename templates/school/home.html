@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+
+{% block title %}Home - Smart School Portal{% endblock %}
+
+{% block content %}
+<div class="hero-section text-center py-5 bg-light rounded">
+    <h1 class="display-4"><i class="fas fa-graduation-cap text-primary"></i> Welcome to Smart School Portal</h1>
+    <p class="lead">A comprehensive school management system for students, teachers, and administrators.</p>
+    <hr class="my-4">
+    <div class="row mt-5">
+        <div class="col-md-4">
+            <div class="card h-100">
+                <div class="card-body text-center">
+                    <i class="fas fa-user-graduate fa-3x text-primary mb-3"></i>
+                    <h5 class="card-title">For Students</h5>
+                    <p class="card-text">View assignments, check results, and manage your academic progress.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card h-100">
+                <div class="card-body text-center">
+                    <i class="fas fa-chalkboard-teacher fa-3x text-success mb-3"></i>
+                    <h5 class="card-title">For Teachers</h5>
+                    <p class="card-text">Manage classes, mark attendance, create assignments, and track student performance.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card h-100">
+                <div class="card-body text-center">
+                    <i class="fas fa-user-shield fa-3x text-danger mb-3"></i>
+                    <h5 class="card-title">For Administrators</h5>
+                    <p class="card-text">Complete control over school operations, user management, and system settings.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="mt-5">
+        <a href="{% url 'login' %}" class="btn btn-primary btn-lg me-2">
+            <i class="fas fa-sign-in-alt"></i> Login
+        </a>
+        <a href="{% url 'register' %}" class="btn btn-success btn-lg">
+            <i class="fas fa-user-plus"></i> Register
+        </a>
+    </div>
+</div>
+
+<div class="features-section mt-5">
+    <h2 class="text-center mb-4">Features</h2>
+    <div class="row">
+        <div class="col-md-3 mb-3">
+            <div class="card">
+                <div class="card-body">
+                    <h6><i class="fas fa-calendar-check text-primary"></i> Attendance Management</h6>
+                    <p class="small">Track and manage student attendance efficiently.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 mb-3">
+            <div class="card">
+                <div class="card-body">
+                    <h6><i class="fas fa-tasks text-success"></i> Assignment System</h6>
+                    <p class="small">Create and submit assignments digitally.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 mb-3">
+            <div class="card">
+                <div class="card-body">
+                    <h6><i class="fas fa-chart-line text-info"></i> Result Management</h6>
+                    <p class="small">Record and view exam results and grades.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 mb-3">
+            <div class="card">
+                <div class="card-body">
+                    <h6><i class="fas fa-bullhorn text-warning"></i> Notice Board</h6>
+                    <p class="small">Stay updated with important announcements.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

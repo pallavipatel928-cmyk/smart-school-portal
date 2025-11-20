@@ -1,0 +1,923 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard - Smart School Portal{% endblock %}
+
+{% block content %}
+
+<!-- Animated Hero Banner -->
+<div style="position: relative; margin: -20px -20px 30px -20px; padding: 50px 30px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 0 0 30px 30px; overflow: hidden; box-shadow: 0 10px 40px rgba(102, 126, 234, 0.3);">
+    <!-- Animated Background Particles -->
+    <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden;">
+        <!-- Floating Circles -->
+        <div style="position: absolute; width: 80px; height: 80px; background: rgba(255,255,255,0.1); border-radius: 50%; top: 10%; left: 5%; animation: float-particle 15s ease-in-out infinite;"></div>
+        <div style="position: absolute; width: 60px; height: 60px; background: rgba(255,255,255,0.08); border-radius: 50%; top: 60%; right: 10%; animation: float-particle 12s ease-in-out infinite 2s;"></div>
+        <div style="position: absolute; width: 100px; height: 100px; background: rgba(255,255,255,0.06); border-radius: 50%; bottom: 10%; left: 15%; animation: float-particle 18s ease-in-out infinite 4s;"></div>
+        
+        <!-- Floating Icons -->
+        <svg style="position: absolute; top: 20%; right: 15%; width: 50px; height: 50px; opacity: 0.3; animation: rotate-slow 20s linear infinite;" viewBox="0 0 100 100">
+            <polygon points="50,10 61,40 92,40 67,59 78,90 50,70 22,90 33,59 8,40 39,40" fill="white"/>
+        </svg>
+    </div>
+    
+    <!-- Hero Content -->
+    <div style="position: relative; z-index: 10; display: flex; justify-content: space-between; align-items: center; color: white;">
+        <div style="flex: 1;">
+            <div style="display: inline-block; padding: 8px 20px; background: rgba(255,255,255,0.2); border-radius: 20px; font-size: 14px; font-weight: 600; margin-bottom: 15px;">
+                <i class="fas fa-circle" style="color: #4ade80; font-size: 8px;"></i> Online
+            </div>
+            <h2 style="font-size: 42px; font-weight: 800; margin: 10px 0; text-shadow: 2px 2px 8px rgba(0,0,0,0.2); letter-spacing: -1px;">
+                <i class="fas fa-tachometer-alt"></i> Dashboard
+            </h2>
+            <p style="font-size: 18px; opacity: 0.95; margin: 10px 0;">
+                Welcome back, <strong>{{ user.get_full_name|default:user.username }}</strong>!
+            </p>
+            <p style="font-size: 14px; opacity: 0.85; margin: 5px 0;">
+                <i class="fas fa-user-shield"></i> {{ user.get_role_display }} Panel
+            </p>
+        </div>
+        
+        <!-- AI Illustration -->
+        <div style="flex: 0 0 250px; text-align: right;">
+            <svg width="250" height="200" viewBox="0 0 250 200" style="filter: drop-shadow(0 10px 20px rgba(0,0,0,0.2));">
+                <!-- AI Dashboard Illustration -->
+                <g class="dashboard-illustration">
+                    <!-- Monitor/Screen -->
+                    <rect x="50" y="40" width="150" height="100" rx="10" fill="white" opacity="0.95"/>
+                    <rect x="60" y="50" width="130" height="70" rx="5" fill="#667eea" opacity="0.3"/>
+                    
+                    <!-- Charts/Data Lines -->
+                    <line x1="70" y1="100" x2="100" y2="80" stroke="#4ade80" stroke-width="3" class="chart-line-1"/>
+                    <line x1="100" y1="80" x2="130" y2="90" stroke="#4ade80" stroke-width="3" class="chart-line-1"/>
+                    <line x1="130" y1="90" x2="160" y2="70" stroke="#4ade80" stroke-width="3" class="chart-line-1"/>
+                    
+                    <!-- Bars -->
+                    <rect x="70" y="100" width="10" height="15" fill="#fbbf24" class="bar-1"/>
+                    <rect x="90" y="95" width="10" height="20" fill="#fbbf24" class="bar-2"/>
+                    <rect x="110" y="90" width="10" height="25" fill="#fbbf24" class="bar-3"/>
+                    
+                    <!-- Stand -->
+                    <rect x="115" y="140" width="20" height="30" fill="white" opacity="0.9"/>
+                    <ellipse cx="125" cy="170" rx="40" ry="8" fill="white" opacity="0.8"/>
+                    
+                    <!-- Floating Elements -->
+                    <circle cx="30" cy="30" r="8" fill="#fbbf24" class="floating-dot-1"/>
+                    <circle cx="220" cy="50" r="6" fill="#4ade80" class="floating-dot-2"/>
+                    <circle cx="210" cy="120" r="7" fill="#f87171" class="floating-dot-3"/>
+                    
+                    <!-- Notification Badge -->
+                    <circle cx="190" cy="50" r="12" fill="#f87171" class="pulse-notification"/>
+                    <text x="190" y="55" text-anchor="middle" fill="white" font-size="14" font-weight="bold">3</text>
+                </g>
+            </svg>
+        </div>
+    </div>
+</div>
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <span class="badge bg-success"><i class="fas fa-circle"></i> All Systems Active</span>
+    </div>
+</div>
+
+{% if user.role == 'student' %}
+    <!-- Student Dashboard -->
+    <div class="row">
+        <div class="col-md-3 mb-4">
+            <div class="card border-0 shadow-sm h-100" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                <div class="card-body text-white text-center">
+                    <div class="mb-3">
+                        <i class="fas fa-user-graduate fa-3x opacity-75"></i>
+                    </div>
+                    <h6 class="card-title text-uppercase fw-bold mb-2">Student Profile</h6>
+                    <h4 class="mb-2">{{ student.roll_no }}</h4>
+                    <p class="mb-0 small">{{ student.classroom|default:"Not Assigned" }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 mb-4">
+            <div class="card border-0 shadow-sm h-100" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
+                <div class="card-body text-white text-center">
+                    <div class="mb-3">
+                        <i class="fas fa-tasks fa-3x opacity-75"></i>
+                    </div>
+                    <h6 class="card-title text-uppercase fw-bold mb-2">Assignments</h6>
+                    <h2 class="display-4 mb-0">{{ assignments.count }}</h2>
+                    <p class="mb-0 small">Active Tasks</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 mb-4">
+            <div class="card border-0 shadow-sm h-100" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">
+                <div class="card-body text-white text-center">
+                    <div class="mb-3">
+                        <i class="fas fa-chart-line fa-3x opacity-75"></i>
+                    </div>
+                    <h6 class="card-title text-uppercase fw-bold mb-2">Results</h6>
+                    <h2 class="display-4 mb-0">{{ recent_results.count }}</h2>
+                    <p class="mb-0 small">Exam Records</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 mb-4">
+            <div class="card border-0 shadow-sm h-100" style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);">
+                <div class="card-body text-white text-center">
+                    <div class="mb-3">
+                        <i class="fas fa-bell fa-3x opacity-75"></i>
+                    </div>
+                    <h6 class="card-title text-uppercase fw-bold mb-2">Notices</h6>
+                    <h2 class="display-4 mb-0">{{ recent_notices.count }}</h2>
+                    <p class="mb-0 small">Announcements</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-gradient" style="background: linear-gradient(90deg, #667eea 0%, #764ba2 100%); color: white;">
+                    <h5 class="mb-0"><i class="fas fa-bullhorn"></i> Recent Notices</h5>
+                </div>
+                <div class="card-body">
+                    {% if recent_notices %}
+                        <ul class="list-group">
+                            {% for notice in recent_notices %}
+                                <li class="list-group-item">
+                                    <strong>{{ notice.title }}</strong>
+                                    <small class="text-muted d-block">{{ notice.publish_date }}</small>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                        <a href="{% url 'notice_list' %}" class="btn btn-sm btn-primary mt-2">View All</a>
+                    {% else %}
+                        <p class="text-muted">No notices available.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5><i class="fas fa-tasks"></i> Recent Assignments</h5>
+                </div>
+                <div class="card-body">
+                    {% if assignments %}
+                        <ul class="list-group">
+                            {% for assignment in assignments %}
+                                <li class="list-group-item">
+                                    <strong>{{ assignment.title }}</strong>
+                                    <small class="text-muted d-block">Due: {{ assignment.due_date }}</small>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                        <a href="{% url 'assignment_list' %}" class="btn btn-sm btn-primary mt-2">View All</a>
+                    {% else %}
+                        <p class="text-muted">No assignments available.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% elif user.role == 'teacher' %}
+    <!-- Teacher Dashboard -->
+    
+    <!-- AI-Generated Hero Illustration -->
+    <div style="margin: 0 auto 40px auto; max-width: 1300px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 25px; padding: 50px; position: relative; overflow: hidden; box-shadow: 0 15px 50px rgba(102, 126, 234, 0.3);">
+        <!-- Animated Background Elements -->
+        <div style="position: absolute; top: -50px; right: -50px; width: 200px; height: 200px; background: rgba(255,255,255,0.1); border-radius: 50%; animation: float-particle 20s ease-in-out infinite;"></div>
+        <div style="position: absolute; bottom: -30px; left: -30px; width: 150px; height: 150px; background: rgba(255,255,255,0.08); border-radius: 50%; animation: float-particle 15s ease-in-out infinite 2s;"></div>
+        
+        <!-- AI Teacher Illustration -->
+        <div style="display: flex; align-items: center; gap: 50px; position: relative; z-index: 10;">
+            <div style="flex: 1;">
+                <h2 style="font-size: 48px; font-weight: 900; color: white; margin: 0 0 20px 0; text-shadow: 3px 3px 10px rgba(0,0,0,0.3);">
+                    Welcome, {{ user.get_full_name|default:user.username }}! 👋
+                </h2>
+                <p style="font-size: 20px; color: rgba(255,255,255,0.95); margin: 0 0 10px 0; line-height: 1.6;">
+                    <i class="fas fa-chalkboard-teacher"></i> Your Teacher Dashboard
+                </p>
+                <p style="font-size: 16px; color: rgba(255,255,255,0.85); margin: 0;">
+                    Manage classes, track student progress, and collaborate with fellow educators
+                </p>
+            </div>
+            
+            <!-- AI-Generated Teacher & Students Illustration -->
+            <svg width="400" height="300" viewBox="0 0 400 300" style="filter: drop-shadow(0 10px 30px rgba(0,0,0,0.3));">
+                <!-- Teacher Figure -->
+                <g class="teacher-figure">
+                    <!-- Head -->
+                    <circle cx="200" cy="80" r="35" fill="#fee140" opacity="0.95"/>
+                    <!-- Body -->
+                    <rect x="170" y="115" width="60" height="80" rx="10" fill="#4facfe" opacity="0.95"/>
+                    <!-- Arms -->
+                    <rect x="140" y="125" width="30" height="15" rx="7" fill="#4facfe" opacity="0.95" transform="rotate(-20 155 132)"/>
+                    <rect x="230" y="125" width="30" height="15" rx="7" fill="#4facfe" opacity="0.95" transform="rotate(20 245 132)"/>
+                    <!-- Pointing Hand -->
+                    <circle cx="260" cy="140" r="10" fill="#fee140" opacity="0.95"/>
+                    <!-- Legs -->
+                    <rect x="175" y="195" width="20" height="50" rx="10" fill="#667eea" opacity="0.95"/>
+                    <rect x="205" y="195" width="20" height="50" rx="10" fill="#667eea" opacity="0.95"/>
+                    <!-- Book in hand -->
+                    <rect x="135" y="135" width="25" height="30" rx="3" fill="white" opacity="0.95"/>
+                    <line x1="140" y1="145" x2="155" y2="145" stroke="#667eea" stroke-width="2"/>
+                    <line x1="140" y1="152" x2="155" y2="152" stroke="#667eea" stroke-width="2"/>
+                    <line x1="140" y1="159" x2="150" y2="159" stroke="#667eea" stroke-width="2"/>
+                </g>
+                
+                <!-- Student 1 -->
+                <g class="student-1" style="animation: bounce-slow 3s ease-in-out infinite;">
+                    <circle cx="100" cy="180" r="25" fill="#43e97b" opacity="0.9"/>
+                    <rect x="80" y="205" width="40" height="55" rx="8" fill="#f093fb" opacity="0.9"/>
+                    <rect x="85" y="215" width="30" height="25" rx="3" fill="white" opacity="0.9"/>
+                    <circle cx="95" cy="175" r="3" fill="white"/>
+                    <circle cx="105" cy="175" r="3" fill="white"/>
+                    <path d="M 90 185 Q 100 190 110 185" stroke="white" stroke-width="2" fill="none"/>
+                </g>
+                
+                <!-- Student 2 -->
+                <g class="student-2" style="animation: bounce-slow 3s ease-in-out infinite 0.5s;">
+                    <circle cx="300" cy="180" r="25" fill="#fa709a" opacity="0.9"/>
+                    <rect x="280" y="205" width="40" height="55" rx="8" fill="#00f2fe" opacity="0.9"/>
+                    <rect x="285" y="215" width="30" height="25" rx="3" fill="white" opacity="0.9"/>
+                    <circle cx="295" cy="175" r="3" fill="white"/>
+                    <circle cx="305" cy="175" r="3" fill="white"/>
+                    <path d="M 290 185 Q 300 190 310 185" stroke="white" stroke-width="2" fill="none"/>
+                </g>
+                
+                <!-- Student 3 (Background) -->
+                <g class="student-3" style="animation: bounce-slow 3s ease-in-out infinite 1s;">
+                    <circle cx="200" cy="200" r="20" fill="#38f9d7" opacity="0.7"/>
+                    <rect x="185" y="220" width="30" height="45" rx="6" fill="#f5576c" opacity="0.7"/>
+                    <rect x="190" y="228" width="20" height="20" rx="2" fill="white" opacity="0.7"/>
+                </g>
+                
+                <!-- Floating Book Icons -->
+                <g class="floating-book-1" style="animation: float-up-down 4s ease-in-out infinite;">
+                    <rect x="50" y="50" width="30" height="40" rx="3" fill="#fbbf24" opacity="0.8"/>
+                    <line x1="55" y1="62" x2="75" y2="62" stroke="white" stroke-width="2"/>
+                    <line x1="55" y1="70" x2="75" y2="70" stroke="white" stroke-width="2"/>
+                    <line x1="55" y1="78" x2="70" y2="78" stroke="white" stroke-width="2"/>
+                </g>
+                
+                <g class="floating-book-2" style="animation: float-up-down 5s ease-in-out infinite 1s;">
+                    <rect x="320" y="40" width="30" height="40" rx="3" fill="#f87171" opacity="0.8"/>
+                    <line x1="325" y1="52" x2="345" y2="52" stroke="white" stroke-width="2"/>
+                    <line x1="325" y1="60" x2="345" y2="60" stroke="white" stroke-width="2"/>
+                    <line x1="325" y1="68" x2="340" y2="68" stroke="white" stroke-width="2"/>
+                </g>
+                
+                <!-- Star/Achievement Icons -->
+                <polygon points="360,120 365,130 375,132 367,140 369,150 360,145 351,150 353,140 345,132 355,130" fill="#fee140" opacity="0.9" class="twinkle-star"/>
+                <polygon points="40,140 45,150 55,152 47,160 49,170 40,165 31,170 33,160 25,152 35,150" fill="#4ade80" opacity="0.9" class="twinkle-star" style="animation: twinkle 2s ease-in-out infinite 0.5s;"/>
+            </svg>
+        </div>
+    </div>
+    
+    <!-- Teacher Management Boards Section -->
+    <div style="margin: 40px auto 50px auto; max-width: 1300px;">
+        <h2 style="text-align: center; font-size: 36px; font-weight: 800; margin-bottom: 40px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">
+            <i class="fas fa-chalkboard-teacher"></i> Teacher Management Hub
+        </h2>
+        
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px;">
+            <!-- Teacher Profile Board -->
+            <div class="teacher-board" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 20px; padding: 35px 30px; color: white; box-shadow: 0 10px 35px rgba(102, 126, 234, 0.4); position: relative; overflow: hidden; transition: all 0.3s; cursor: pointer; min-height: 320px; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center;" onmouseover="this.style.transform='translateY(-10px) scale(1.02)'; this.style.boxShadow='0 15px 45px rgba(102, 126, 234, 0.6)';" onmouseout="this.style.transform='translateY(0) scale(1)'; this.style.boxShadow='0 10px 35px rgba(102, 126, 234, 0.4)';">
+                <!-- AI-Generated Teacher Illustration in Corner -->
+                <svg style="position: absolute; top: -20px; right: -20px; width: 150px; height: 150px; opacity: 0.2; animation: float-up-down 6s ease-in-out infinite;" viewBox="0 0 100 100">
+                    <!-- Teacher at desk with laptop -->
+                    <circle cx="50" cy="30" r="15" fill="white"/>
+                    <rect x="40" y="45" width="20" height="25" rx="3" fill="white"/>
+                    <rect x="30" y="50" width="10" height="5" rx="2" fill="white" transform="rotate(-30 35 52)"/>
+                    <rect x="60" y="50" width="10" height="5" rx="2" fill="white" transform="rotate(30 65 52)"/>
+                    <!-- Desk/laptop -->
+                    <rect x="25" y="70" width="50" height="3" fill="white"/>
+                    <rect x="35" y="60" width="30" height="12" rx="2" fill="white" opacity="0.8"/>
+                    <line x1="40" y1="65" x2="60" y2="65" stroke="#667eea" stroke-width="1.5"/>
+                    <line x1="40" y1="68" x2="55" y2="68" stroke="#667eea" stroke-width="1"/>
+                </svg>
+                <!-- Animated Background Pattern -->
+                <svg style="position: absolute; bottom: -40px; right: -40px; width: 180px; height: 180px; opacity: 0.15; animation: rotate-slow 20s linear infinite;" viewBox="0 0 100 100">
+                    <circle cx="50" cy="50" r="40" fill="none" stroke="white" stroke-width="2.5"/>
+                    <circle cx="50" cy="50" r="30" fill="none" stroke="white" stroke-width="2"/>
+                    <circle cx="50" cy="25" r="12" fill="white"/>
+                    <rect x="38" y="37" width="24" height="28" fill="white" rx="3"/>
+                    <circle cx="30" cy="70" r="8" fill="white" opacity="0.7"/>
+                    <circle cx="70" cy="70" r="8" fill="white" opacity="0.7"/>
+                </svg>
+                <div style="position: absolute; top: 30px; left: 30px; width: 70px; height: 70px; background: rgba(255,255,255,0.12); border-radius: 50%; animation: pulse-glow 3s ease-in-out infinite;"></div>
+                <div style="position: absolute; bottom: 40px; right: 45px; width: 55px; height: 55px; background: rgba(255,255,255,0.1); border-radius: 50%; animation: pulse-glow 3s ease-in-out infinite 1.5s;"></div>
+                <div style="position: relative; z-index: 10;">
+                    <div style="font-size: 80px; margin-bottom: 18px; animation: float-up-down 3s ease-in-out infinite;">👨‍🏫</div>
+                    <h3 style="font-size: 30px; font-weight: 800; margin: 15px 0; text-shadow: 2px 2px 6px rgba(0,0,0,0.3); letter-spacing: 1px;">Teacher Profile</h3>
+                    <p style="font-size: 16px; opacity: 0.95; margin-bottom: 22px; line-height: 1.6;">View & edit your<br>professional profile</p>
+                    <a href="{% url 'profile' %}" style="display: inline-block; padding: 14px 35px; background: white; color: #667eea; border-radius: 30px; text-decoration: none; font-weight: 800; font-size: 15px; transition: all 0.3s; box-shadow: 0 5px 15px rgba(0,0,0,0.2);" onmouseover="this.style.transform='scale(1.1)'; this.style.boxShadow='0 8px 22px rgba(0,0,0,0.3)';" onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 5px 15px rgba(0,0,0,0.2)';">View Profile →</a>
+                </div>
+            </div>
+            
+            <!-- Subject Directory Board -->
+            <div class="teacher-board" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); border-radius: 20px; padding: 35px 30px; color: white; box-shadow: 0 10px 35px rgba(240, 147, 251, 0.4); position: relative; overflow: hidden; transition: all 0.3s; cursor: pointer; min-height: 320px; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center;" onmouseover="this.style.transform='translateY(-10px) scale(1.02)'; this.style.boxShadow='0 15px 45px rgba(240, 147, 251, 0.6)';" onmouseout="this.style.transform='translateY(0) scale(1)'; this.style.boxShadow='0 10px 35px rgba(240, 147, 251, 0.4)';">
+                <!-- AI-Generated Books Stack Illustration -->
+                <svg style="position: absolute; bottom: -15px; left: -15px; width: 140px; height: 140px; opacity: 0.25; animation: bounce-slow 5s ease-in-out infinite;" viewBox="0 0 100 100">
+                    <!-- Stack of books -->
+                    <rect x="20" y="70" width="35" height="8" rx="1" fill="white" transform="rotate(-5 37 74)"/>
+                    <rect x="18" y="60" width="38" height="10" rx="1" fill="white" opacity="0.9" transform="rotate(3 37 65)"/>
+                    <rect x="22" y="50" width="32" height="9" rx="1" fill="white" opacity="0.95"/>
+                    <rect x="25" y="40" width="30" height="8" rx="1" fill="white" transform="rotate(-3 40 44)"/>
+                    <!-- Open book -->
+                    <path d="M 55 55 L 55 75 L 70 70 L 70 50 Z" fill="white" opacity="0.8"/>
+                    <path d="M 55 55 L 55 75 L 40 70 L 40 50 Z" fill="white" opacity="0.9"/>
+                    <line x1="55" y1="60" x2="48" y2="58" stroke="#f5576c" stroke-width="0.5"/>
+                    <line x1="55" y1="65" x2="48" y2="63" stroke="#f5576c" stroke-width="0.5"/>
+                    <line x1="55" y1="60" x2="62" y2="58" stroke="#f5576c" stroke-width="0.5"/>
+                    <line x1="55" y1="65" x2="62" y2="63" stroke="#f5576c" stroke-width="0.5"/>
+                </svg>
+                <!-- Animated Background Pattern -->
+                <svg style="position: absolute; bottom: -40px; right: -40px; width: 180px; height: 180px; opacity: 0.15; animation: float-up-down 4s ease-in-out infinite;" viewBox="0 0 100 100">
+                    <rect x="20" y="20" width="60" height="70" fill="none" stroke="white" stroke-width="2.5" rx="5"/>
+                    <line x1="30" y1="35" x2="70" y2="35" stroke="white" stroke-width="3"/>
+                    <line x1="30" y1="50" x2="70" y2="50" stroke="white" stroke-width="3"/>
+                    <line x1="30" y1="65" x2="65" y2="65" stroke="white" stroke-width="3"/>
+                    <line x1="30" y1="80" x2="68" y2="80" stroke="white" stroke-width="3"/>
+                    <rect x="55" y="15" width="30" height="40" fill="white" opacity="0.3" rx="3"/>
+                </svg>
+                <div style="position: absolute; top: 30px; right: 30px; width: 70px; height: 70px; background: rgba(255,255,255,0.12); border-radius: 50%; animation: pulse-glow 3s ease-in-out infinite 1s;"></div>
+                <div style="position: absolute; bottom: 40px; left: 45px; width: 55px; height: 55px; background: rgba(255,255,255,0.1); border-radius: 50%; animation: pulse-glow 3s ease-in-out infinite 2.5s;"></div>
+                <div style="position: relative; z-index: 10;">
+                    <div style="font-size: 80px; margin-bottom: 18px; animation: bounce-slow 3s ease-in-out infinite;">📚</div>
+                    <h3 style="font-size: 30px; font-weight: 800; margin: 15px 0; text-shadow: 2px 2px 6px rgba(0,0,0,0.3); letter-spacing: 1px;">Subject Directory</h3>
+                    <p style="font-size: 16px; opacity: 0.95; margin-bottom: 10px; line-height: 1.6;"><strong style="font-size: 42px; display: block;">{{ subjects.count }}</strong>Teaching Subjects</p>
+                    <button onclick="toggleSubjectList()" style="display: inline-block; padding: 14px 35px; background: white; color: #f5576c; border: none; border-radius: 30px; text-decoration: none; font-weight: 800; font-size: 15px; transition: all 0.3s; box-shadow: 0 5px 15px rgba(0,0,0,0.2); cursor: pointer;" onmouseover="this.style.transform='scale(1.1)'; this.style.boxShadow='0 8px 22px rgba(0,0,0,0.3)';" onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 5px 15px rgba(0,0,0,0.2)';">View Subjects →</button>
+                </div>
+            </div>
+            
+            <!-- Faculty List Board -->
+            <div class="teacher-board" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); border-radius: 20px; padding: 35px 30px; color: white; box-shadow: 0 10px 35px rgba(79, 172, 254, 0.4); position: relative; overflow: hidden; transition: all 0.3s; cursor: pointer; min-height: 320px; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center;" onmouseover="this.style.transform='translateY(-10px) scale(1.02)'; this.style.boxShadow='0 15px 45px rgba(79, 172, 254, 0.6)';" onmouseout="this.style.transform='translateY(0) scale(1)'; this.style.boxShadow='0 10px 35px rgba(79, 172, 254, 0.4)';">
+                <!-- AI-Generated Teachers Group Illustration -->
+                <svg style="position: absolute; top: -10px; left: -10px; width: 130px; height: 130px; opacity: 0.22; animation: pulse-glow 4s ease-in-out infinite;" viewBox="0 0 100 100">
+                    <!-- Teacher 1 -->
+                    <circle cx="30" cy="35" r="10" fill="white"/>
+                    <rect x="22" y="45" width="16" height="20" rx="2" fill="white" opacity="0.9"/>
+                    <!-- Teacher 2 -->
+                    <circle cx="55" cy="30" r="12" fill="white" opacity="0.95"/>
+                    <rect x="46" y="42" width="18" height="23" rx="2" fill="white" opacity="0.95"/>
+                    <!-- Teacher 3 -->
+                    <circle cx="75" cy="37" r="9" fill="white" opacity="0.85"/>
+                    <rect x="68" y="46" width="14" height="18" rx="2" fill="white" opacity="0.85"/>
+                    <!-- Connection lines (collaboration) -->
+                    <line x1="38" y1="55" x2="48" y2="55" stroke="white" stroke-width="1.5" opacity="0.6"/>
+                    <line x1="63" y1="55" x2="70" y2="55" stroke="white" stroke-width="1.5" opacity="0.6"/>
+                </svg>
+                <!-- Animated Background Pattern -->
+                <svg style="position: absolute; bottom: -40px; right: -40px; width: 180px; height: 180px; opacity: 0.15; animation: rotate-slow 25s linear infinite reverse;" viewBox="0 0 100 100">
+                    <circle cx="35" cy="30" r="12" fill="white"/>
+                    <rect x="23" y="42" width="24" height="28" fill="white" rx="3"/>
+                    <circle cx="65" cy="30" r="12" fill="white" opacity="0.8"/>
+                    <rect x="53" y="42" width="24" height="28" fill="white" opacity="0.8" rx="3"/>
+                    <circle cx="50" cy="65" r="10" fill="white" opacity="0.6"/>
+                    <rect x="40" y="75" width="20" height="20" fill="white" opacity="0.6" rx="3"/>
+                </svg>
+                <div style="position: absolute; bottom: 40px; left: 40px; width: 65px; height: 65px; background: rgba(255,255,255,0.12); border-radius: 50%; animation: pulse-glow 3s ease-in-out infinite 2s;"></div>
+                <div style="position: absolute; top: 35px; right: 50px; width: 50px; height: 50px; background: rgba(255,255,255,0.1); border-radius: 50%; animation: pulse-glow 3s ease-in-out infinite 3.5s;"></div>
+                <div style="position: relative; z-index: 10;">
+                    <div style="font-size: 80px; margin-bottom: 18px; animation: twinkle 2s ease-in-out infinite;">👥</div>
+                    <h3 style="font-size: 30px; font-weight: 800; margin: 15px 0; text-shadow: 2px 2px 6px rgba(0,0,0,0.3); letter-spacing: 1px;">Faculty List</h3>
+                    <p style="font-size: 16px; opacity: 0.95; margin-bottom: 22px; line-height: 1.6;">Connect with<br>fellow educators</p>
+                    <button onclick="toggleFacultyList()" style="display: inline-block; padding: 14px 35px; background: white; color: #00f2fe; border: none; border-radius: 30px; text-decoration: none; font-weight: 800; font-size: 15px; transition: all 0.3s; box-shadow: 0 5px 15px rgba(0,0,0,0.2); cursor: pointer;" onmouseover="this.style.transform='scale(1.1)'; this.style.boxShadow='0 8px 22px rgba(0,0,0,0.3)';" onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 5px 15px rgba(0,0,0,0.2)';">View Faculty →</button>
+                </div>
+            </div>
+            
+            <!-- Student Interaction Hub Board -->
+            <div class="teacher-board" style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); border-radius: 20px; padding: 35px 30px; color: white; box-shadow: 0 10px 35px rgba(67, 233, 123, 0.4); position: relative; overflow: hidden; transition: all 0.3s; cursor: pointer; min-height: 320px; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center;" onmouseover="this.style.transform='translateY(-10px) scale(1.02)'; this.style.boxShadow='0 15px 45px rgba(67, 233, 123, 0.6)';" onmouseout="this.style.transform='translateY(0) scale(1)'; this.style.boxShadow='0 10px 35px rgba(67, 233, 123, 0.4)';">
+                <!-- AI-Generated Students Learning Illustration -->
+                <svg style="position: absolute; bottom: -20px; right: -20px; width: 160px; height: 160px; opacity: 0.2; animation: float-up-down 7s ease-in-out infinite;" viewBox="0 0 100 100">
+                    <!-- Student with raised hand -->
+                    <circle cx="35" cy="40" r="12" fill="white"/>
+                    <rect x="27" y="52" width="16" height="25" rx="3" fill="white"/>
+                    <!-- Raised hand -->
+                    <rect x="20" y="45" width="8" height="15" rx="2" fill="white" transform="rotate(-45 24 52)"/>
+                    <circle cx="18" cy="42" r="4" fill="white"/>
+                    <!-- Student reading -->
+                    <circle cx="65" cy="45" r="11" fill="white" opacity="0.9"/>
+                    <rect x="58" y="56" width="14" height="22" rx="3" fill="white" opacity="0.9"/>
+                    <!-- Book -->
+                    <rect x="55" y="62" width="16" height="10" rx="1" fill="white" opacity="0.95"/>
+                    <line x1="63" y1="65" x2="63" y2="69" stroke="#38f9d7" stroke-width="1"/>
+                    <!-- Thinking bubble -->
+                    <circle cx="48" cy="25" r="8" fill="white" opacity="0.7"/>
+                    <circle cx="53" cy="20" r="5" fill="white" opacity="0.6"/>
+                    <circle cx="56" cy="15" r="3" fill="white" opacity="0.5"/>
+                </svg>
+                <!-- Animated Background Pattern -->
+                <svg style="position: absolute; bottom: -40px; right: -40px; width: 180px; height: 180px; opacity: 0.15; animation: float-up-down 5s ease-in-out infinite;" viewBox="0 0 100 100">
+                    <polygon points="50,15 61,40 88,40 66,57 74,83 50,67 26,83 34,57 12,40 39,40" fill="white"/>
+                    <circle cx="50" cy="50" r="35" fill="none" stroke="white" stroke-width="2.5"/>
+                    <path d="M 30 60 Q 50 70 70 60" stroke="white" stroke-width="3" fill="none"/>
+                    <circle cx="40" cy="45" r="3" fill="white"/>
+                    <circle cx="60" cy="45" r="3" fill="white"/>
+                </svg>
+                <div style="position: absolute; top: 35px; right: 40px; width: 70px; height: 70px; background: rgba(255,255,255,0.12); border-radius: 50%; animation: pulse-glow 3s ease-in-out infinite 1.5s;"></div>
+                <div style="position: absolute; bottom: 45px; left: 42px; width: 58px; height: 58px; background: rgba(255,255,255,0.1); border-radius: 50%; animation: pulse-glow 3s ease-in-out infinite 3s;"></div>
+                <div style="position: relative; z-index: 10;">
+                    <div style="font-size: 80px; margin-bottom: 18px; animation: float-up-down 4s ease-in-out infinite;">🎓</div>
+                    <h3 style="font-size: 30px; font-weight: 800; margin: 15px 0; text-shadow: 2px 2px 6px rgba(0,0,0,0.3); letter-spacing: 1px;">Student Hub</h3>
+                    <p style="font-size: 16px; opacity: 0.95; margin-bottom: 22px; line-height: 1.6;">Interact with students<br>& track progress</p>
+                    <a href="{% url 'student_list' %}" style="display: inline-block; padding: 14px 35px; background: white; color: #38f9d7; border-radius: 30px; text-decoration: none; font-weight: 800; font-size: 15px; transition: all 0.3s; box-shadow: 0 5px 15px rgba(0,0,0,0.2);" onmouseover="this.style.transform='scale(1.1)'; this.style.boxShadow='0 8px 22px rgba(0,0,0,0.3)';" onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 5px 15px rgba(0,0,0,0.2)';">View Students →</a>
+                </div>
+            </div>
+            
+            <!-- Communication Center Board -->
+            <div class="teacher-board" style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); border-radius: 20px; padding: 35px 30px; color: white; box-shadow: 0 10px 35px rgba(250, 112, 154, 0.4); position: relative; overflow: hidden; transition: all 0.3s; cursor: pointer; min-height: 320px; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center;" onmouseover="this.style.transform='translateY(-10px) scale(1.02)'; this.style.boxShadow='0 15px 45px rgba(250, 112, 154, 0.6)';" onmouseout="this.style.transform='translateY(0) scale(1)'; this.style.boxShadow='0 10px 35px rgba(250, 112, 154, 0.4)';">
+                <!-- AI-Generated Communication/Message Illustration -->
+                <svg style="position: absolute; top: -15px; right: -15px; width: 145px; height: 145px; opacity: 0.23; animation: bounce-slow 6s ease-in-out infinite;" viewBox="0 0 100 100">
+                    <!-- Message bubble 1 -->
+                    <rect x="20" y="25" width="45" height="28" rx="8" fill="white" opacity="0.95"/>
+                    <polygon points="25,53 20,58 30,53" fill="white" opacity="0.95"/>
+                    <line x1="28" y1="33" x2="58" y2="33" stroke="#fa709a" stroke-width="2"/>
+                    <line x1="28" y1="40" x2="52" y2="40" stroke="#fa709a" stroke-width="2"/>
+                    <line x1="28" y1="47" x2="48" y2="47" stroke="#fa709a" stroke-width="1.5"/>
+                    <!-- Message bubble 2 -->
+                    <rect x="35" y="55" width="42" height="25" rx="8" fill="white" opacity="0.85"/>
+                    <polygon points="72,80 77,85 72,80" fill="white" opacity="0.85"/>
+                    <line x1="42" y1="63" x2="70" y2="63" stroke="#fee140" stroke-width="2"/>
+                    <line x1="42" y1="70" x2="65" y2="70" stroke="#fee140" stroke-width="1.5"/>
+                    <!-- Email envelope icon -->
+                    <rect x="60" y="15" width="30" height="22" rx="3" fill="white" opacity="0.9"/>
+                    <polygon points="60,15 75,27 90,15" fill="#fa709a" opacity="0.8"/>
+                    <line x1="60" y1="15" x2="75" y2="27" stroke="white" stroke-width="1.5"/>
+                    <line x1="90" y1="15" x2="75" y2="27" stroke="white" stroke-width="1.5"/>
+                </svg>
+                <!-- Animated Background Pattern -->
+                <svg style="position: absolute; bottom: -40px; right: -40px; width: 180px; height: 180px; opacity: 0.15; animation: pulse-glow 4s ease-in-out infinite;" viewBox="0 0 100 100">
+                    <circle cx="30" cy="40" r="25" fill="none" stroke="white" stroke-width="2.5"/>
+                    <circle cx="70" cy="60" r="25" fill="none" stroke="white" stroke-width="2.5"/>
+                    <path d="M 45 50 L 60 55" stroke="white" stroke-width="3"/>
+                    <polygon points="58,50 65,55 58,60" fill="white"/>
+                    <circle cx="30" cy="40" r="8" fill="white"/>
+                    <circle cx="70" cy="60" r="8" fill="white"/>
+                </svg>
+                <div style="position: absolute; top: 32px; left: 35px; width: 68px; height: 68px; background: rgba(255,255,255,0.12); border-radius: 50%; animation: pulse-glow 3s ease-in-out infinite 2.5s;"></div>
+                <div style="position: absolute; bottom: 42px; right: 48px; width: 56px; height: 56px; background: rgba(255,255,255,0.1); border-radius: 50%; animation: pulse-glow 3s ease-in-out infinite 4s;"></div>
+                <div style="position: relative; z-index: 10;">
+                    <div style="font-size: 80px; margin-bottom: 18px; animation: bounce-slow 3.5s ease-in-out infinite;">💬</div>
+                    <h3 style="font-size: 30px; font-weight: 800; margin: 15px 0; text-shadow: 2px 2px 6px rgba(0,0,0,0.3); letter-spacing: 1px;">Communication</h3>
+                    <p style="font-size: 16px; opacity: 0.95; margin-bottom: 22px; line-height: 1.6;">Messages, notices<br>& announcements</p>
+                    <a href="{% url 'notice_list' %}" style="display: inline-block; padding: 14px 35px; background: white; color: #fa709a; border-radius: 30px; text-decoration: none; font-weight: 800; font-size: 15px; transition: all 0.3s; box-shadow: 0 5px 15px rgba(0,0,0,0.2);" onmouseover="this.style.transform='scale(1.1)'; this.style.boxShadow='0 8px 22px rgba(0,0,0,0.3)';" onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 5px 15px rgba(0,0,0,0.2)';">Open Center →</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Subject List Modal/Expandable Section -->
+    <div id="subjectListSection" style="display: none; margin: 30px auto; max-width: 1300px; animation: slideInUp 0.5s ease-out;">
+        <div class="card border-0 shadow-lg" style="border-radius: 20px; overflow: hidden;">
+            <div class="card-header" style="background: linear-gradient(90deg, #f093fb 0%, #f5576c 100%); color: white; padding: 25px;">
+                <h5 class="mb-0" style="font-size: 24px; font-weight: 800;"><i class="fas fa-book"></i> My Teaching Subjects</h5>
+            </div>
+            <div class="card-body" style="padding: 30px;">
+                {% if subjects %}
+                    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 20px;">
+                        {% for subject in subjects %}
+                            <div style="background: linear-gradient(135deg, #f093fb15 0%, #f5576c15 100%); border-left: 4px solid #f5576c; padding: 20px; border-radius: 12px; transition: all 0.3s;" onmouseover="this.style.transform='translateX(10px)'; this.style.boxShadow='0 5px 20px rgba(245, 87, 108, 0.2)';" onmouseout="this.style.transform='translateX(0)'; this.style.boxShadow='none';">
+                                <h6 style="font-size: 18px; font-weight: 700; color: #f5576c; margin-bottom: 8px;"><i class="fas fa-bookmark"></i> {{ subject.name }}</h6>
+                                <p style="font-size: 14px; color: #666; margin: 0;">{{ subject.code|default:"Subject Code" }}</p>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <p class="text-muted text-center" style="font-size: 18px; padding: 40px;"><i class="fas fa-inbox"></i> No subjects assigned yet.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    
+    <!-- Faculty List Modal/Expandable Section -->
+    <div id="facultyListSection" style="display: none; margin: 30px auto; max-width: 1300px; animation: slideInUp 0.5s ease-out;">
+        <div class="card border-0 shadow-lg" style="border-radius: 20px; overflow: hidden;">
+            <div class="card-header" style="background: linear-gradient(90deg, #4facfe 0%, #00f2fe 100%); color: white; padding: 25px;">
+                <h5 class="mb-0" style="font-size: 24px; font-weight: 800;"><i class="fas fa-users"></i> Faculty Directory</h5>
+            </div>
+            <div class="card-body" style="padding: 30px;">
+                <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px;">
+                    <div style="background: linear-gradient(135deg, #4facfe15 0%, #00f2fe15 100%); border-left: 4px solid #00f2fe; padding: 20px; border-radius: 12px; transition: all 0.3s;" onmouseover="this.style.transform='translateY(-5px)'; this.style.boxShadow='0 5px 20px rgba(0, 242, 254, 0.2)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none';">
+                        <div style="display: flex; align-items: center; gap: 15px;">
+                            <div style="width: 60px; height: 60px; border-radius: 50%; background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); display: flex; align-items: center; justify-content: center; color: white; font-size: 24px; font-weight: 700;">{{ user.username|slice:":1"|upper }}</div>
+                            <div>
+                                <h6 style="font-size: 16px; font-weight: 700; color: #00f2fe; margin: 0;">{{ user.get_full_name|default:user.username }}</h6>
+                                <p style="font-size: 13px; color: #666; margin: 5px 0 0 0;"><i class="fas fa-envelope"></i> {{ user.email }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Placeholder for more faculty members -->
+                    <div style="background: #f8f9fa; border: 2px dashed #ddd; padding: 20px; border-radius: 12px; text-align: center; color: #999;">
+                        <i class="fas fa-user-plus" style="font-size: 32px; margin-bottom: 10px;"></i>
+                        <p style="margin: 0; font-size: 14px;">More faculty members</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Quick Stats & Actions -->
+    <div class="row mt-5">
+        <div class="col-md-4 mb-4">
+            <div class="card border-0 shadow-sm h-100" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                <div class="card-body text-white text-center p-4">
+                    <div class="mb-3">
+                        <i class="fas fa-tasks fa-4x opacity-75"></i>
+                    </div>
+                    <h6 class="card-title text-uppercase fw-bold mb-2">Assignments</h6>
+                    <h2 class="display-3 mb-0">{{ my_assignments.count }}</h2>
+                    <p class="mb-3 small">Created Tasks</p>
+                    <a href="{% url 'assignment_list' %}" class="btn btn-light btn-sm fw-bold">Manage →</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="card border-0 shadow-sm h-100" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
+                <div class="card-body text-white text-center p-4">
+                    <div class="mb-3">
+                        <i class="fas fa-clipboard-check fa-4x opacity-75"></i>
+                    </div>
+                    <h6 class="card-title text-uppercase fw-bold mb-2">Attendance</h6>
+                    <h2 class="display-3 mb-0">--</h2>
+                    <p class="mb-3 small">Mark Today</p>
+                    <button class="btn btn-light btn-sm fw-bold">Take Attendance →</button>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="card border-0 shadow-sm h-100" style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);">
+                <div class="card-body text-white text-center p-4">
+                    <div class="mb-3">
+                        <i class="fas fa-bullhorn fa-4x opacity-75"></i>
+                    </div>
+                    <h6 class="card-title text-uppercase fw-bold mb-2">Notices</h6>
+                    <h2 class="display-3 mb-0">{{ recent_notices.count }}</h2>
+                    <p class="mb-3 small">Announcements</p>
+                    <a href="{% url 'notice_list' %}" class="btn btn-light btn-sm fw-bold">View All →</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Recent Assignments Section -->
+    <div class="row mt-4">
+        <div class="col-md-12">
+            <div class="card border-0 shadow-lg" style="border-radius: 20px; overflow: hidden;">
+                <div class="card-header" style="background: linear-gradient(90deg, #667eea 0%, #764ba2 100%); color: white; padding: 25px;">
+                    <h5 class="mb-0" style="font-size: 24px; font-weight: 800;"><i class="fas fa-tasks"></i> Recent Assignments</h5>
+                </div>
+                <div class="card-body" style="padding: 30px;">
+                    {% if my_assignments %}
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead style="background: #f8f9fa;">
+                                    <tr>
+                                        <th style="padding: 15px; font-weight: 700;">Title</th>
+                                        <th style="padding: 15px; font-weight: 700;">Class</th>
+                                        <th style="padding: 15px; font-weight: 700;">Subject</th>
+                                        <th style="padding: 15px; font-weight: 700;">Due Date</th>
+                                        <th style="padding: 15px; font-weight: 700;">Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for assignment in my_assignments %}
+                                        <tr style="transition: all 0.3s;" onmouseover="this.style.background='#f8f9fa';" onmouseout="this.style.background='white';">
+                                            <td style="padding: 15px; font-weight: 600;">{{ assignment.title }}</td>
+                                            <td style="padding: 15px;">{{ assignment.classroom }}</td>
+                                            <td style="padding: 15px;">{{ assignment.subject }}</td>
+                                            <td style="padding: 15px;"><i class="fas fa-calendar"></i> {{ assignment.due_date|date:"M d, Y" }}</td>
+                                            <td style="padding: 15px;"><span class="badge bg-success">Active</span></td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                        <a href="{% url 'assignment_list' %}" class="btn btn-primary mt-3"><i class="fas fa-plus"></i> Create New Assignment</a>
+                    {% else %}
+                        <div class="text-center" style="padding: 60px 20px;">
+                            <i class="fas fa-clipboard-list" style="font-size: 64px; color: #ddd; margin-bottom: 20px;"></i>
+                            <p class="text-muted" style="font-size: 18px; margin-bottom: 20px;">No assignments created yet</p>
+                            <a href="{% url 'assignment_list' %}" class="btn btn-primary"><i class="fas fa-plus"></i> Create Your First Assignment</a>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+    function toggleSubjectList() {
+        const section = document.getElementById('subjectListSection');
+        if (section.style.display === 'none') {
+            section.style.display = 'block';
+            section.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        } else {
+            section.style.display = 'none';
+        }
+    }
+    
+    function toggleFacultyList() {
+        const section = document.getElementById('facultyListSection');
+        if (section.style.display === 'none') {
+            section.style.display = 'block';
+            section.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        } else {
+            section.style.display = 'none';
+        }
+    }
+    </script>
+
+{% else %}
+    <!-- Admin Dashboard -->
+    <div class="row">
+        <div class="col-md-3 mb-4">
+            <div class="card border-0 shadow-lg h-100" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                <div class="card-body text-white text-center p-4">
+                    <div class="mb-3">
+                        <i class="fas fa-user-graduate fa-4x opacity-75"></i>
+                    </div>
+                    <h2 class="display-4 fw-bold mb-2">{{ total_students }}</h2>
+                    <p class="mb-0 text-uppercase fw-bold">Total Students</p>
+                    <small class="opacity-75">Active Learners</small>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 mb-4">
+            <div class="card border-0 shadow-lg h-100" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
+                <div class="card-body text-white text-center p-4">
+                    <div class="mb-3">
+                        <i class="fas fa-chalkboard-teacher fa-4x opacity-75"></i>
+                    </div>
+                    <h2 class="display-4 fw-bold mb-2">{{ total_teachers }}</h2>
+                    <p class="mb-0 text-uppercase fw-bold">Total Teachers</p>
+                    <small class="opacity-75">Educators</small>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 mb-4">
+            <div class="card border-0 shadow-lg h-100" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">
+                <div class="card-body text-white text-center p-4">
+                    <div class="mb-3">
+                        <i class="fas fa-book-open fa-4x opacity-75"></i>
+                    </div>
+                    <h2 class="display-4 fw-bold mb-2">{{ total_subjects }}</h2>
+                    <p class="mb-0 text-uppercase fw-bold">Total Subjects</p>
+                    <small class="opacity-75">Academic Courses</small>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 mb-4">
+            <div class="card border-0 shadow-lg h-100" style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);">
+                <div class="card-body text-white text-center p-4">
+                    <div class="mb-3">
+                        <i class="fas fa-door-open fa-4x opacity-75"></i>
+                    </div>
+                    <h2 class="display-4 fw-bold mb-2">{{ total_classes }}</h2>
+                    <p class="mb-0 text-uppercase fw-bold">Total Classes</p>
+                    <small class="opacity-75">Classrooms</small>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card border-0 shadow-lg">
+                <div class="card-header bg-gradient" style="background: linear-gradient(90deg, #667eea 0%, #764ba2 100%); color: white;">
+                    <h5 class="mb-0"><i class="fas fa-bullhorn"></i> Recent Notices</h5>
+                </div>
+                <div class="card-body">
+                    {% if recent_notices %}
+                        <ul class="list-group">
+                            {% for notice in recent_notices %}
+                                <li class="list-group-item">
+                                    <strong>{{ notice.title }}</strong>
+                                    <small class="text-muted d-block">{{ notice.publish_date }} - Target: {{ notice.get_target_role_display }}</small>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                        <a href="{% url 'notice_list' %}" class="btn btn-sm btn-primary mt-2">View All</a>
+                    {% else %}
+                        <p class="text-muted">No notices available.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    {% if pending_users > 0 %}
+        <div class="alert border-0 shadow-sm mt-4" style="background: linear-gradient(90deg, #f093fb 0%, #f5576c 100%); color: white;">
+            <i class="fas fa-exclamation-triangle fa-2x float-start me-3"></i>
+            <h5 class="alert-heading">Pending Approvals!</h5>
+            <p class="mb-2">There are <strong>{{ pending_users }}</strong> pending user registration(s) awaiting your approval.</p>
+            <a href="/admin/school/user/?is_active__exact=0" class="btn btn-light btn-sm"><i class="fas fa-eye"></i> Review Now</a>
+        </div>
+    {% endif %}
+
+{% endif %}
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* Dashboard Animations */
+    @keyframes float-particle {
+        0%, 100% {
+            transform: translate(0, 0) scale(1);
+            opacity: 0.6;
+        }
+        25% {
+            transform: translate(30px, -30px) scale(1.1);
+            opacity: 0.8;
+        }
+        50% {
+            transform: translate(0, -60px) scale(1);
+            opacity: 1;
+        }
+        75% {
+            transform: translate(-30px, -30px) scale(0.9);
+            opacity: 0.8;
+        }
+    }
+    
+    @keyframes rotate-slow {
+        from { transform: rotate(0deg); }
+        to { transform: rotate(360deg); }
+    }
+    
+    @keyframes chart-line-animate {
+        0% {
+            stroke-dasharray: 100;
+            stroke-dashoffset: 100;
+        }
+        100% {
+            stroke-dasharray: 100;
+            stroke-dashoffset: 0;
+        }
+    }
+    
+    @keyframes bar-grow {
+        from {
+            height: 0;
+        }
+        to {
+            height: attr(height);
+        }
+    }
+    
+    @keyframes floating-dot {
+        0%, 100% {
+            transform: translateY(0) scale(1);
+        }
+        50% {
+            transform: translateY(-20px) scale(1.2);
+        }
+    }
+    
+    @keyframes pulse-notification {
+        0%, 100% {
+            transform: scale(1);
+            opacity: 1;
+        }
+        50% {
+            transform: scale(1.2);
+            opacity: 0.7;
+        }
+    }
+    
+    .chart-line-1 {
+        animation: chart-line-animate 2s ease-in-out infinite;
+    }
+    
+    .bar-1 {
+        animation: bar-grow 1s ease-out, floating-dot 3s ease-in-out infinite;
+    }
+    
+    .bar-2 {
+        animation: bar-grow 1s ease-out 0.2s, floating-dot 3s ease-in-out infinite 0.5s;
+    }
+    
+    .bar-3 {
+        animation: bar-grow 1s ease-out 0.4s, floating-dot 3s ease-in-out infinite 1s;
+    }
+    
+    .floating-dot-1 {
+        animation: floating-dot 4s ease-in-out infinite;
+    }
+    
+    .floating-dot-2 {
+        animation: floating-dot 3s ease-in-out infinite 0.5s;
+    }
+    
+    .floating-dot-3 {
+        animation: floating-dot 3.5s ease-in-out infinite 1s;
+    }
+    
+    .pulse-notification {
+        animation: pulse-notification 2s ease-in-out infinite;
+    }
+    
+    .dashboard-illustration {
+        animation: fadeIn 1s ease-in;
+    }
+    
+    /* Card Entrance Animation */
+    .card {
+        animation: slideInUp 0.6s ease-out;
+    }
+    
+    @keyframes slideInUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    /* Stagger animation for cards */
+    .col-md-3:nth-child(1) .card,
+    .col-md-4:nth-child(1) .card {
+        animation-delay: 0.1s;
+    }
+    
+    .col-md-3:nth-child(2) .card,
+    .col-md-4:nth-child(2) .card {
+        animation-delay: 0.2s;
+    }
+    
+    .col-md-3:nth-child(3) .card,
+    .col-md-4:nth-child(3) .card {
+        animation-delay: 0.3s;
+    }
+    
+    .col-md-3:nth-child(4) .card,
+    .col-md-4:nth-child(4) .card {
+        animation-delay: 0.4s;
+    }
+    
+    /* Teacher Dashboard AI Illustrations Animations */
+    .teacher-figure {
+        animation: fadeIn 1.5s ease-in;
+    }
+    
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    .twinkle-star {
+        animation: twinkle 2s ease-in-out infinite;
+    }
+    
+    @keyframes twinkle {
+        0%, 100% {
+            opacity: 0.9;
+            transform: scale(1);
+        }
+        50% {
+            opacity: 0.4;
+            transform: scale(0.8);
+        }
+    }
+    
+    @keyframes pulse-glow {
+        0%, 100% {
+            opacity: 0.6;
+            transform: scale(1);
+        }
+        50% {
+            opacity: 1;
+            transform: scale(1.1);
+        }
+    }
+    
+    @keyframes float-up-down {
+        0%, 100% {
+            transform: translateY(0);
+        }
+        50% {
+            transform: translateY(-15px);
+        }
+    }
+    
+    @keyframes bounce-slow {
+        0%, 100% {
+            transform: translateY(0);
+        }
+        50% {
+            transform: translateY(-10px);
+        }
+    }
+</style>
+{% endblock %}

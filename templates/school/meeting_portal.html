@@ -1,0 +1,205 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Meeting Portal{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <!-- Header -->
+    <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 20px; padding: 40px; margin-bottom: 30px; box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3); position: relative; overflow: hidden;">
+        <div style="position: absolute; top: -50px; right: -50px; width: 200px; height: 200px; background: rgba(255,255,255,0.1); border-radius: 50%;"></div>
+        <div style="position: absolute; bottom: -30px; left: -30px; width: 150px; height: 150px; background: rgba(255,255,255,0.08); border-radius: 50%;"></div>
+        
+        <div style="position: relative; z-index: 10;">
+            <h2 style="color: white; font-size: 42px; font-weight: 800; margin: 0 0 10px 0;">
+                <i class="fas fa-users-cog"></i> Meeting Portal
+            </h2>
+            <p style="color: rgba(255,255,255,0.9); font-size: 18px; margin: 0;">
+                {% if can_create %}Principal's Meeting Management System{% else %}Your Scheduled Meetings{% endif %}
+            </p>
+        </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="mb-4">
+        {% if can_create %}
+            <a href="{% url 'meeting_create' %}" class="btn btn-primary" style="padding: 14px 30px; font-weight: 700; border-radius: 10px; font-size: 16px;">
+                <i class="fas fa-plus-circle"></i> Schedule New Meeting
+            </a>
+        {% endif %}
+        <a href="{% url 'dashboard' %}" class="btn btn-outline-secondary" style="padding: 14px 30px; font-weight: 700; border-radius: 10px; font-size: 16px;">
+            <i class="fas fa-arrow-left"></i> Back to Dashboard
+        </a>
+    </div>
+
+    <!-- Today's Meetings -->
+    {% if today_meetings %}
+        <div class="card border-0 shadow-lg mb-4" style="border-radius: 20px; overflow: hidden;">
+            <div class="card-header" style="background: linear-gradient(90deg, #fa709a 0%, #fee140 100%); color: white; padding: 25px;">
+                <h5 class="mb-0" style="font-size: 24px; font-weight: 800;">
+                    <i class="fas fa-calendar-day"></i> Today's Meetings
+                </h5>
+            </div>
+            <div class="card-body" style="padding: 30px;">
+                <div style="display: grid; gap: 20px;">
+                    {% for meeting in today_meetings %}
+                        <div style="background: linear-gradient(135deg, #fa709a15 0%, #fee14015 100%); border-left: 4px solid #fa709a; padding: 20px; border-radius: 12px;">
+                            <div class="d-flex justify-content-between align-items-start">
+                                <div>
+                                    <h6 style="font-size: 20px; font-weight: 700; color: #333; margin-bottom: 8px;">{{ meeting.title }}</h6>
+                                    <p style="color: #666; margin: 5px 0;"><i class="fas fa-tag"></i> {{ meeting.get_meeting_type_display }}</p>
+                                    <p style="color: #666; margin: 5px 0;"><i class="fas fa-clock"></i> {{ meeting.start_time }} - {{ meeting.end_time }}</p>
+                                    <p style="color: #666; margin: 5px 0;"><i class="fas fa-map-marker-alt"></i> {{ meeting.location }}</p>
+                                </div>
+                                <a href="{% url 'meeting_detail' meeting.pk %}" class="btn btn-sm btn-primary" style="padding: 8px 20px; border-radius: 10px;">
+                                    <i class="fas fa-eye"></i> View
+                                </a>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    {% endif %}
+
+    <!-- My Organized Meetings (Admin/Principal only) -->
+    {% if can_create and my_meetings %}
+        <div class="card border-0 shadow-lg mb-4" style="border-radius: 20px; overflow: hidden;">
+            <div class="card-header" style="background: linear-gradient(90deg, #667eea 0%, #764ba2 100%); color: white; padding: 25px;">
+                <h5 class="mb-0" style="font-size: 24px; font-weight: 800;">
+                    <i class="fas fa-user-shield"></i> Meetings I Organized
+                </h5>
+            </div>
+            <div class="card-body" style="padding: 30px;">
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead style="background: #f8f9fa;">
+                            <tr>
+                                <th style="padding: 15px; font-weight: 700;">Meeting Title</th>
+                                <th style="padding: 15px; font-weight: 700;">Type</th>
+                                <th style="padding: 15px; font-weight: 700;">Date & Time</th>
+                                <th style="padding: 15px; font-weight: 700;">Status</th>
+                                <th style="padding: 15px; font-weight: 700;">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for meeting in my_meetings %}
+                                <tr>
+                                    <td style="padding: 15px; font-weight: 600;">{{ meeting.title }}</td>
+                                    <td style="padding: 15px;">
+                                        <span class="badge" style="padding: 6px 12px; border-radius: 8px; 
+                                            {% if meeting.meeting_type == 'staff' %}background: #667eea; color: white;
+                                            {% elif meeting.meeting_type == 'parent' %}background: #f093fb; color: white;
+                                            {% elif meeting.meeting_type == 'student' %}background: #43e97b; color: white;
+                                            {% else %}background: #6c757d; color: white;{% endif %}">
+                                            {{ meeting.get_meeting_type_display }}
+                                        </span>
+                                    </td>
+                                    <td style="padding: 15px;">{{ meeting.meeting_date|date:"M d, Y" }} {{ meeting.start_time }}</td>
+                                    <td style="padding: 15px;">
+                                        <span class="badge 
+                                            {% if meeting.status == 'scheduled' %}bg-primary
+                                            {% elif meeting.status == 'ongoing' %}bg-success
+                                            {% elif meeting.status == 'completed' %}bg-secondary
+                                            {% else %}bg-danger{% endif %}" 
+                                            style="padding: 6px 12px; border-radius: 8px;">
+                                            {{ meeting.get_status_display }}
+                                        </span>
+                                    </td>
+                                    <td style="padding: 15px;">
+                                        <a href="{% url 'meeting_detail' meeting.pk %}" class="btn btn-sm btn-primary" style="padding: 6px 16px; border-radius: 8px;">
+                                            <i class="fas fa-eye"></i> View
+                                        </a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+
+    <!-- Invited Meetings -->
+    {% if invited_meetings %}
+        <div class="card border-0 shadow-lg mb-4" style="border-radius: 20px; overflow: hidden;">
+            <div class="card-header" style="background: linear-gradient(90deg, #f093fb 0%, #f5576c 100%); color: white; padding: 25px;">
+                <h5 class="mb-0" style="font-size: 24px; font-weight: 800;">
+                    <i class="fas fa-calendar-check"></i> Meetings I'm Invited To
+                </h5>
+            </div>
+            <div class="card-body" style="padding: 30px;">
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead style="background: #f8f9fa;">
+                            <tr>
+                                <th style="padding: 15px; font-weight: 700;">Meeting Title</th>
+                                <th style="padding: 15px; font-weight: 700;">Type</th>
+                                <th style="padding: 15px; font-weight: 700;">Organized By</th>
+                                <th style="padding: 15px; font-weight: 700;">Date & Time</th>
+                                <th style="padding: 15px; font-weight: 700;">Status</th>
+                                <th style="padding: 15px; font-weight: 700;">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for meeting in invited_meetings %}
+                                <tr>
+                                    <td style="padding: 15px; font-weight: 600;">{{ meeting.title }}</td>
+                                    <td style="padding: 15px;">
+                                        <span class="badge" style="padding: 6px 12px; border-radius: 8px; 
+                                            {% if meeting.meeting_type == 'staff' %}background: #667eea; color: white;
+                                            {% elif meeting.meeting_type == 'parent' %}background: #f093fb; color: white;
+                                            {% elif meeting.meeting_type == 'student' %}background: #43e97b; color: white;
+                                            {% else %}background: #6c757d; color: white;{% endif %}">
+                                            {{ meeting.get_meeting_type_display }}
+                                        </span>
+                                    </td>
+                                    <td style="padding: 15px;">{{ meeting.organized_by.get_full_name }}</td>
+                                    <td style="padding: 15px;">{{ meeting.meeting_date|date:"M d, Y" }} {{ meeting.start_time }}</td>
+                                    <td style="padding: 15px;">
+                                        <span class="badge 
+                                            {% if meeting.status == 'scheduled' %}bg-primary
+                                            {% elif meeting.status == 'ongoing' %}bg-success
+                                            {% elif meeting.status == 'completed' %}bg-secondary
+                                            {% else %}bg-danger{% endif %}" 
+                                            style="padding: 6px 12px; border-radius: 8px;">
+                                            {{ meeting.get_status_display }}
+                                        </span>
+                                    </td>
+                                    <td style="padding: 15px;">
+                                        <a href="{% url 'meeting_detail' meeting.pk %}" class="btn btn-sm btn-primary" style="padding: 6px 16px; border-radius: 8px;">
+                                            <i class="fas fa-eye"></i> View
+                                        </a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+
+    <!-- No Meetings Message -->
+    {% if not today_meetings and not my_meetings and not invited_meetings %}
+        <div class="card border-0 shadow-lg" style="border-radius: 20px;">
+            <div class="card-body text-center" style="padding: 80px 20px;">
+                <i class="fas fa-calendar-times" style="font-size: 100px; color: #ddd; margin-bottom: 30px;"></i>
+                <h4 style="color: #666; font-weight: 700; margin-bottom: 15px;">No Meetings Scheduled</h4>
+                <p style="color: #999; font-size: 16px; margin-bottom: 30px;">
+                    {% if can_create %}
+                        Start by creating your first meeting to connect with staff, students, or parents.
+                    {% else %}
+                        You haven't been invited to any meetings yet.
+                    {% endif %}
+                </p>
+                {% if can_create %}
+                    <a href="{% url 'meeting_create' %}" class="btn btn-primary" style="padding: 14px 40px; font-weight: 700; border-radius: 10px; font-size: 16px;">
+                        <i class="fas fa-plus-circle"></i> Schedule First Meeting
+                    </a>
+                {% endif %}
+            </div>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

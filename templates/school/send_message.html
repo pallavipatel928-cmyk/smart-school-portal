@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Send Message{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <!-- Header -->
+            <div style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); border-radius: 20px; padding: 40px; margin-bottom: 30px; box-shadow: 0 10px 30px rgba(240, 147, 251, 0.3);">
+                <h2 style="color: white; font-size: 36px; font-weight: 800; margin: 0;">
+                    <i class="fas fa-paper-plane"></i> Compose Message
+                </h2>
+                <p style="color: rgba(255,255,255,0.9); font-size: 18px; margin: 10px 0 0 0;">
+                    Send a message to a colleague
+                </p>
+            </div>
+
+            <!-- Message Form -->
+            <div class="card border-0 shadow-lg" style="border-radius: 20px;">
+                <div class="card-body" style="padding: 40px;">
+                    <form method="POST" action="{% url 'send_message' %}">
+                        {% csrf_token %}
+                        
+                        <!-- Recipient Selection -->
+                        <div class="mb-4">
+                            <label for="recipient" class="form-label" style="font-weight: 700; font-size: 16px; color: #333; margin-bottom: 10px;">
+                                <i class="fas fa-user"></i> To (Recipient)
+                            </label>
+                            <select name="recipient" id="recipient" class="form-select" required style="padding: 12px; border-radius: 10px; border: 2px solid #e0e0e0; font-size: 15px;">
+                                <option value="">-- Select a recipient --</option>
+                                {% for user in users %}
+                                    <option value="{{ user.pk }}" {% if selected_recipient == user.pk|stringformat:"s" %}selected{% endif %}>
+                                        {{ user.get_full_name|default:user.username }} ({{ user.email }}) - {{ user.get_role_display }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <!-- Subject -->
+                        <div class="mb-4">
+                            <label for="subject" class="form-label" style="font-weight: 700; font-size: 16px; color: #333; margin-bottom: 10px;">
+                                <i class="fas fa-heading"></i> Subject
+                            </label>
+                            <input type="text" name="subject" id="subject" class="form-control" required placeholder="Enter message subject" value="{{ initial_subject }}" style="padding: 12px; border-radius: 10px; border: 2px solid #e0e0e0; font-size: 15px;">
+                        </div>
+
+                        <!-- Message Body -->
+                        <div class="mb-4">
+                            <label for="body" class="form-label" style="font-weight: 700; font-size: 16px; color: #333; margin-bottom: 10px;">
+                                <i class="fas fa-align-left"></i> Message
+                            </label>
+                            <textarea name="body" id="body" class="form-control" required rows="8" placeholder="Type your message here..." style="padding: 12px; border-radius: 10px; border: 2px solid #e0e0e0; font-size: 15px; resize: vertical;"></textarea>
+                        </div>
+
+                        <!-- Buttons -->
+                        <div class="d-flex gap-3">
+                            <button type="submit" class="btn btn-primary" style="padding: 14px 40px; font-weight: 700; border-radius: 10px; font-size: 16px;">
+                                <i class="fas fa-paper-plane"></i> Send Message
+                            </button>
+                            <a href="{% url 'inbox' %}" class="btn btn-outline-secondary" style="padding: 14px 40px; font-weight: 700; border-radius: 10px; font-size: 16px;">
+                                <i class="fas fa-times"></i> Cancel
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .form-select:focus,
+    .form-control:focus {
+        border-color: #f093fb !important;
+        box-shadow: 0 0 0 0.2rem rgba(240, 147, 251, 0.25) !important;
+    }
+</style>
+{% endblock %}

@@ -1,0 +1,110 @@
+{% extends 'base.html' %}
+
+{% block title %}Schedule Meeting{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-10">
+            <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 20px; padding: 40px; margin-bottom: 30px; color: white;">
+                <h2 style="font-size: 36px; font-weight: 800; margin: 0;">
+                    <i class="fas fa-calendar-plus"></i> Schedule New Meeting
+                </h2>
+            </div>
+
+            <div class="card border-0 shadow-lg" style="border-radius: 20px;">
+                <div class="card-body" style="padding: 40px;">
+                    <form method="POST">
+                        {% csrf_token %}
+                        
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label" style="font-weight: 700;">Meeting Title</label>
+                                <input type="text" name="title" class="form-control" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label" style="font-weight: 700;">Meeting Type</label>
+                                <select name="meeting_type" class="form-select" required>
+                                    <option value="staff">Staff Meeting</option>
+                                    <option value="parent">Parent Meeting</option>
+                                    <option value="student">Student Meeting</option>
+                                    <option value="general">General Meeting</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label" style="font-weight: 700;">Discussion Topic</label>
+                            <input type="text" name="topic" class="form-control" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label" style="font-weight: 700;">Description/Agenda</label>
+                            <textarea name="description" class="form-control" rows="4" required></textarea>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label" style="font-weight: 700;">Date</label>
+                                <input type="date" name="meeting_date" class="form-control" required>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label" style="font-weight: 700;">Start Time</label>
+                                <input type="time" name="start_time" class="form-control" required>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label" style="font-weight: 700;">End Time</label>
+                                <input type="time" name="end_time" class="form-control" required>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label" style="font-weight: 700;">Location/Venue</label>
+                            <input type="text" name="location" class="form-control" required placeholder="e.g., Conference Room, Principal Office">
+                        </div>
+
+                        <div class="mb-3">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="is_virtual" id="is_virtual">
+                                <label class="form-check-label" for="is_virtual" style="font-weight: 600;">
+                                    This is a virtual meeting (Online)
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="mb-3" id="meeting_link_div" style="display: none;">
+                            <label class="form-label" style="font-weight: 700;">Meeting Link (Zoom/Google Meet)</label>
+                            <input type="url" name="meeting_link" class="form-control" placeholder="https://zoom.us/j/...">
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label" style="font-weight: 700;">Select Participants</label>
+                            <select name="participants" class="form-select" multiple size="8">
+                                {% for user in users %}
+                                    <option value="{{ user.pk }}">{{ user.get_full_name|default:user.username }} ({{ user.get_role_display }})</option>
+                                {% endfor %}
+                            </select>
+                            <small class="text-muted">Hold Ctrl/Cmd to select multiple participants</small>
+                        </div>
+
+                        <div class="d-flex gap-3">
+                            <button type="submit" class="btn btn-primary" style="padding: 14px 40px; font-weight: 700; border-radius: 10px;">
+                                <i class="fas fa-check"></i> Schedule Meeting
+                            </button>
+                            <a href="{% url 'meeting_portal' %}" class="btn btn-outline-secondary" style="padding: 14px 40px; font-weight: 700; border-radius: 10px;">
+                                <i class="fas fa-times"></i> Cancel
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.getElementById('is_virtual').addEventListener('change', function() {
+    document.getElementById('meeting_link_div').style.display = this.checked ? 'block' : 'none';
+});
+</script>
+{% endblock %}

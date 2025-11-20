@@ -1,0 +1,108 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Inbox - Messages{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-12">
+            <!-- Header -->
+            <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 20px; padding: 40px; margin-bottom: 30px; box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);">
+                <h2 style="color: white; font-size: 36px; font-weight: 800; margin: 0;">
+                    <i class="fas fa-inbox"></i> Inbox
+                </h2>
+                <p style="color: rgba(255,255,255,0.9); font-size: 18px; margin: 10px 0 0 0;">
+                    You have <strong>{{ unread_count }}</strong> unread message{{ unread_count|pluralize }}
+                </p>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="mb-4">
+                <a href="{% url 'send_message' %}" class="btn btn-primary" style="padding: 12px 30px; font-weight: 700; border-radius: 10px;">
+                    <i class="fas fa-paper-plane"></i> Compose Message
+                </a>
+                <a href="{% url 'dashboard' %}" class="btn btn-outline-secondary" style="padding: 12px 30px; font-weight: 700; border-radius: 10px;">
+                    <i class="fas fa-arrow-left"></i> Back to Dashboard
+                </a>
+            </div>
+
+            <!-- Messages List -->
+            <div class="card border-0 shadow-lg" style="border-radius: 20px; overflow: hidden;">
+                <div class="card-body" style="padding: 0;">
+                    {% if messages %}
+                        <div class="table-responsive">
+                            <table class="table table-hover mb-0">
+                                <thead style="background: linear-gradient(90deg, #f093fb 0%, #f5576c 100%); color: white;">
+                                    <tr>
+                                        <th style="padding: 20px; font-weight: 800; border: none;">Status</th>
+                                        <th style="padding: 20px; font-weight: 800; border: none;">From</th>
+                                        <th style="padding: 20px; font-weight: 800; border: none;">Subject</th>
+                                        <th style="padding: 20px; font-weight: 800; border: none;">Date</th>
+                                        <th style="padding: 20px; font-weight: 800; border: none;">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for message in messages %}
+                                    <tr style="{% if not message.is_read %}background: #f8f9fa; font-weight: 600;{% endif %} transition: all 0.3s;" onmouseover="this.style.background='#e9ecef';" onmouseout="this.style.background='{% if not message.is_read %}#f8f9fa{% else %}white{% endif %}';">
+                                        <td style="padding: 20px; vertical-align: middle;">
+                                            {% if message.is_read %}
+                                                <span class="badge bg-secondary" style="padding: 8px 12px; border-radius: 8px;">
+                                                    <i class="fas fa-envelope-open"></i> Read
+                                                </span>
+                                            {% else %}
+                                                <span class="badge bg-primary" style="padding: 8px 12px; border-radius: 8px;">
+                                                    <i class="fas fa-envelope"></i> New
+                                                </span>
+                                            {% endif %}
+                                        </td>
+                                        <td style="padding: 20px; vertical-align: middle;">
+                                            <div style="display: flex; align-items: center; gap: 12px;">
+                                                <div style="width: 40px; height: 40px; border-radius: 50%; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); display: flex; align-items: center; justify-content: center; color: white; font-weight: 800; font-size: 16px;">
+                                                    {{ message.sender.first_name|slice:":1"|upper }}{{ message.sender.last_name|slice:":1"|upper }}
+                                                </div>
+                                                <div>
+                                                    <div style="font-weight: 700; color: #333;">{{ message.sender.get_full_name|default:message.sender.username }}</div>
+                                                    <div style="font-size: 13px; color: #666;">{{ message.sender.email }}</div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td style="padding: 20px; vertical-align: middle;">
+                                            <div style="font-weight: 600; color: #333;">{{ message.subject }}</div>
+                                            <div style="font-size: 14px; color: #666; margin-top: 5px;">{{ message.body|truncatewords:10 }}</div>
+                                        </td>
+                                        <td style="padding: 20px; vertical-align: middle; color: #666;">
+                                            <i class="fas fa-clock"></i> {{ message.sent_at|date:"M d, Y H:i" }}
+                                        </td>
+                                        <td style="padding: 20px; vertical-align: middle;">
+                                            <a href="{% url 'message_detail' message.pk %}" class="btn btn-sm btn-primary" style="padding: 8px 16px; border-radius: 8px; font-weight: 700;">
+                                                <i class="fas fa-eye"></i> View
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    {% else %}
+                        <div class="text-center" style="padding: 80px 20px;">
+                            <i class="fas fa-inbox" style="font-size: 100px; color: #ddd; margin-bottom: 30px;"></i>
+                            <h4 style="color: #666; font-weight: 700; margin-bottom: 15px;">No Messages</h4>
+                            <p style="color: #999; font-size: 16px; margin-bottom: 30px;">You haven't received any messages yet.</p>
+                            <a href="{% url 'send_message' %}" class="btn btn-primary" style="padding: 12px 30px; font-weight: 700; border-radius: 10px;">
+                                <i class="fas fa-paper-plane"></i> Send Your First Message
+                            </a>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .table-hover tbody tr:hover {
+        cursor: pointer;
+    }
+</style>
+{% endblock %}

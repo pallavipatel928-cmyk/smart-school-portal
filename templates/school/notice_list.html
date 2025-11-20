@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block title %}Notices - Smart School Portal{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2><i class="fas fa-bullhorn"></i> Notices</h2>
+    {% if user.role == 'teacher' or user.role == 'admin' or user.is_staff %}
+        <a href="{% url 'notice_create' %}" class="btn btn-primary">
+            <i class="fas fa-plus"></i> Create Notice
+        </a>
+    {% endif %}
+</div>
+
+<div class="row">
+    {% for notice in notices %}
+        <div class="col-md-12 mb-3">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">{{ notice.title }}</h5>
+                    <span class="badge bg-info">{{ notice.get_target_role_display }}</span>
+                </div>
+                <div class="card-body">
+                    <p class="card-text">{{ notice.content }}</p>
+                    <div class="text-muted small">
+                        <i class="fas fa-user"></i> {{ notice.created_by.get_full_name|default:notice.created_by.username }}
+                        <i class="fas fa-calendar ms-3"></i> {{ notice.publish_date }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% empty %}
+        <div class="col-12">
+            <div class="alert alert-info">
+                <i class="fas fa-info-circle"></i> No notices available at the moment.
+            </div>
+        </div>
+    {% endfor %}
+</div>
+{% endblock %}

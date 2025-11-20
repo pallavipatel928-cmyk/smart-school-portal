@@ -1,0 +1,160 @@
+{% extends 'base.html' %}
+
+{% block title %}Profile - Smart School Portal{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body text-center">
+                {% if user.profile_picture %}
+                    <img src="{{ user.profile_picture.url }}" alt="Profile Picture" class="profile-picture mb-3">
+                {% else %}
+                    <i class="fas fa-user-circle fa-5x text-secondary mb-3"></i>
+                {% endif %}
+                <h4>{{ user.get_full_name|default:user.username }}</h4>
+                <p class="text-muted">{{ user.get_role_display }}</p>
+                <p><i class="fas fa-envelope"></i> {{ user.email }}</p>
+                {% if user.phone %}
+                    <p><i class="fas fa-phone"></i> {{ user.phone }}</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h5><i class="fas fa-info-circle"></i> Profile Information</h5>
+            </div>
+            <div class="card-body">
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <strong>Username:</strong>
+                        <p>{{ user.username }}</p>
+                    </div>
+                    <div class="col-md-6">
+                        <strong>Email:</strong>
+                        <p>{{ user.email }}</p>
+                    </div>
+                </div>
+                
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <strong>First Name:</strong>
+                        <p>{{ user.first_name|default:"-" }}</p>
+                    </div>
+                    <div class="col-md-6">
+                        <strong>Last Name:</strong>
+                        <p>{{ user.last_name|default:"-" }}</p>
+                    </div>
+                </div>
+                
+                {% if student %}
+                    <hr>
+                    <h6 class="text-primary">Student Information</h6>
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <strong>Roll Number:</strong>
+                            <p>{{ student.roll_no }}</p>
+                        </div>
+                        <div class="col-md-6">
+                            <strong>Class:</strong>
+                            <p>{{ student.classroom|default:"-" }}</p>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <strong>Parent Name:</strong>
+                            <p>{{ student.parent_name|default:"-" }}</p>
+                        </div>
+                        <div class="col-md-6">
+                            <strong>Parent Phone:</strong>
+                            <p>{{ student.parent_phone|default:"-" }}</p>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <strong>Admission Date:</strong>
+                            <p>{{ student.admission_date }}</p>
+                        </div>
+                        <div class="col-md-6">
+                            <strong>Status:</strong>
+                            <p>
+                                {% if student.is_active %}
+                                    <span class="badge bg-success">Active</span>
+                                {% else %}
+                                    <span class="badge bg-danger">Inactive</span>
+                                {% endif %}
+                            </p>
+                        </div>
+                    </div>
+                {% elif teacher %}
+                    <hr>
+                    <h6 class="text-success">Teacher Information</h6>
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <strong>Qualification:</strong>
+                            <p>{{ teacher.qualification|default:"-" }}</p>
+                        </div>
+                        <div class="col-md-6">
+                            <strong>Experience:</strong>
+                            <p>{{ teacher.experience_years }} years</p>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <strong>Joining Date:</strong>
+                            <p>{{ teacher.joining_date }}</p>
+                        </div>
+                        <div class="col-md-6">
+                            <strong>Status:</strong>
+                            <p>
+                                {% if teacher.is_active %}
+                                    <span class="badge bg-success">Active</span>
+                                {% else %}
+                                    <span class="badge bg-danger">Inactive</span>
+                                {% endif %}
+                            </p>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-12">
+                            <strong>Subjects:</strong>
+                            <p>
+                                {% if teacher.subjects.all %}
+                                    {% for subject in teacher.subjects.all %}
+                                        <span class="badge bg-info">{{ subject.name }}</span>
+                                    {% endfor %}
+                                {% else %}
+                                    <span class="text-muted">No subjects assigned</span>
+                                {% endif %}
+                            </p>
+                        </div>
+                    </div>
+                {% endif %}
+                
+                {% if user.address %}
+                    <div class="row mb-3">
+                        <div class="col-md-12">
+                            <strong>Address:</strong>
+                            <p>{{ user.address }}</p>
+                        </div>
+                    </div>
+                {% endif %}
+                
+                {% if user.date_of_birth %}
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <strong>Date of Birth:</strong>
+                            <p>{{ user.date_of_birth }}</p>
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+2025-11-12 22:37:27.912 [inf

@@ -1,0 +1,201 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ teacher.user.get_full_name|default:teacher.user.username }} - Teacher Profile{% endblock %}
+
+{% block content %}
+
+<!-- Teacher Profile Header -->
+<div style="position: relative; margin: -20px -20px 30px -20px; padding: 50px 30px; background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); border-radius: 0 0 30px 30px; overflow: hidden; box-shadow: 0 10px 40px rgba(240, 147, 251, 0.3);">
+    <!-- Animated Background -->
+    <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden;">
+        <div style="position: absolute; width: 100px; height: 100px; background: rgba(255,255,255,0.1); border-radius: 50%; top: 20%; left: 10%; animation: float-particle 15s ease-in-out infinite;"></div>
+        <div style="position: absolute; width: 80px; height: 80px; background: rgba(255,255,255,0.08); border-radius: 50%; top: 50%; right: 15%; animation: float-particle 12s ease-in-out infinite 2s;"></div>
+    </div>
+    
+    <!-- Profile Header Content -->
+    <div style="position: relative; z-index: 10; display: flex; align-items: center; gap: 30px; color: white;">
+        <!-- Avatar -->
+        <div style="width: 120px; height: 120px; border-radius: 50%; background: white; display: flex; align-items: center; justify-content: center; font-size: 48px; font-weight: 800; color: #f5576c; box-shadow: 0 10px 30px rgba(0,0,0,0.2);">
+            {% if teacher.user.first_name %}
+                {{ teacher.user.first_name|slice:":1"|upper }}{{ teacher.user.last_name|slice:":1"|upper }}
+            {% else %}
+                {{ teacher.user.username|slice:":2"|upper }}
+            {% endif %}
+        </div>
+        
+        <!-- Teacher Info -->
+        <div>
+            <h2 style="font-size: 42px; font-weight: 800; margin: 0 0 10px 0; text-shadow: 2px 2px 8px rgba(0,0,0,0.2);">
+                {{ teacher.user.get_full_name|default:teacher.user.username }}
+            </h2>
+            <p style="font-size: 18px; margin: 5px 0; opacity: 0.95;">
+                <i class="fas fa-chalkboard-teacher"></i> Faculty Member
+            </p>
+            <p style="font-size: 16px; margin: 5px 0; opacity: 0.9;">
+                <i class="fas fa-id-badge"></i> Employee ID: {{ teacher.employee_id|default:"N/A" }}
+            </p>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <!-- Left Column - Profile Information -->
+    <div class="col-md-4 mb-4">
+        <!-- Contact Information Card -->
+        <div class="card border-0 shadow-lg" style="border-radius: 20px; overflow: hidden; margin-bottom: 25px;">
+            <div class="card-header" style="background: linear-gradient(90deg, #f093fb 0%, #f5576c 100%); color: white; padding: 20px;">
+                <h5 class="mb-0" style="font-weight: 800;"><i class="fas fa-address-card"></i> Contact Information</h5>
+            </div>
+            <div class="card-body" style="padding: 25px;">
+                <div style="margin-bottom: 20px;">
+                    <p style="font-size: 12px; color: #999; text-transform: uppercase; font-weight: 700; margin-bottom: 5px;">Email</p>
+                    <p style="font-size: 16px; color: #333; font-weight: 600; word-break: break-all;">
+                        <i class="fas fa-envelope" style="color: #f5576c;"></i> {{ teacher.user.email }}
+                    </p>
+                </div>
+                
+                {% if teacher.phone %}
+                    <div style="margin-bottom: 20px;">
+                        <p style="font-size: 12px; color: #999; text-transform: uppercase; font-weight: 700; margin-bottom: 5px;">Phone</p>
+                        <p style="font-size: 16px; color: #333; font-weight: 600;">
+                            <i class="fas fa-phone" style="color: #f5576c;"></i> {{ teacher.phone }}
+                        </p>
+                    </div>
+                {% endif %}
+                
+                {% if teacher.qualification %}
+                    <div style="margin-bottom: 20px;">
+                        <p style="font-size: 12px; color: #999; text-transform: uppercase; font-weight: 700; margin-bottom: 5px;">Qualification</p>
+                        <p style="font-size: 16px; color: #333; font-weight: 600;">
+                            <i class="fas fa-graduation-cap" style="color: #f5576c;"></i> {{ teacher.qualification }}
+                        </p>
+                    </div>
+                {% endif %}
+                
+                <div>
+                    <p style="font-size: 12px; color: #999; text-transform: uppercase; font-weight: 700; margin-bottom: 5px;">Status</p>
+                    <span style="background: linear-gradient(135deg, #43e97b15 0%, #38f9d715 100%); color: #38f9d7; padding: 8px 16px; border-radius: 20px; font-size: 14px; font-weight: 700; border: 2px solid #38f9d730;">
+                        <i class="fas fa-circle" style="font-size: 8px;"></i> Active
+                    </span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Quick Actions Card -->
+        <div class="card border-0 shadow-lg" style="border-radius: 20px; overflow: hidden;">
+            <div class="card-header" style="background: linear-gradient(90deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px;">
+                <h5 class="mb-0" style="font-weight: 800;"><i class="fas fa-bolt"></i> Quick Actions</h5>
+            </div>
+            <div class="card-body" style="padding: 20px;">
+                <a href="#" class="btn w-100 mb-3" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white; border: none; border-radius: 12px; padding: 12px; font-weight: 700;">
+                    <i class="fas fa-envelope"></i> Send Message
+                </a>
+                <a href="{% url 'teacher_list' %}" class="btn w-100" style="background: white; color: #667eea; border: 2px solid #667eea; border-radius: 12px; padding: 12px; font-weight: 700;">
+                    <i class="fas fa-arrow-left"></i> Back to Faculty List
+                </a>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Right Column - Teaching Information -->
+    <div class="col-md-8">
+        <!-- Teaching Subjects Card -->
+        <div class="card border-0 shadow-lg mb-4" style="border-radius: 20px; overflow: hidden;">
+            <div class="card-header" style="background: linear-gradient(90deg, #4facfe 0%, #00f2fe 100%); color: white; padding: 20px;">
+                <h5 class="mb-0" style="font-weight: 800;"><i class="fas fa-book"></i> Teaching Subjects</h5>
+            </div>
+            <div class="card-body" style="padding: 30px;">
+                {% if subjects %}
+                    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 20px;">
+                        {% for subject in subjects %}
+                            <div style="background: linear-gradient(135deg, #4facfe15 0%, #00f2fe15 100%); border-left: 4px solid #00f2fe; padding: 20px; border-radius: 12px; transition: all 0.3s;" onmouseover="this.style.transform='translateX(5px)'; this.style.boxShadow='0 5px 20px rgba(0, 242, 254, 0.2)';" onmouseout="this.style.transform='translateX(0)'; this.style.boxShadow='none';">
+                                <h6 style="font-size: 18px; font-weight: 700; color: #00f2fe; margin-bottom: 8px;">
+                                    <i class="fas fa-bookmark"></i> {{ subject.name }}
+                                </h6>
+                                <p style="font-size: 14px; color: #666; margin: 0;">
+                                    {{ subject.code|default:"Subject Code" }}
+                                </p>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <div class="text-center" style="padding: 40px;">
+                        <i class="fas fa-book-open" style="font-size: 48px; color: #ddd; margin-bottom: 15px;"></i>
+                        <p style="color: #999; font-size: 16px;">No subjects assigned yet</p>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+        
+        <!-- Assignments Card -->
+        <div class="card border-0 shadow-lg" style="border-radius: 20px; overflow: hidden;">
+            <div class="card-header" style="background: linear-gradient(90deg, #43e97b 0%, #38f9d7 100%); color: white; padding: 20px;">
+                <h5 class="mb-0" style="font-weight: 800;"><i class="fas fa-tasks"></i> Recent Assignments</h5>
+            </div>
+            <div class="card-body" style="padding: 30px;">
+                {% if assignments %}
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead style="background: #f8f9fa;">
+                                <tr>
+                                    <th style="padding: 15px; font-weight: 700; border: none;">Title</th>
+                                    <th style="padding: 15px; font-weight: 700; border: none;">Class</th>
+                                    <th style="padding: 15px; font-weight: 700; border: none;">Subject</th>
+                                    <th style="padding: 15px; font-weight: 700; border: none;">Due Date</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for assignment in assignments %}
+                                    <tr style="transition: all 0.3s;" onmouseover="this.style.background='#f8f9fa';" onmouseout="this.style.background='white';">
+                                        <td style="padding: 15px; border: none; border-bottom: 1px solid #f0f0f0;">
+                                            <strong>{{ assignment.title }}</strong>
+                                        </td>
+                                        <td style="padding: 15px; border: none; border-bottom: 1px solid #f0f0f0;">
+                                            {{ assignment.classroom }}
+                                        </td>
+                                        <td style="padding: 15px; border: none; border-bottom: 1px solid #f0f0f0;">
+                                            {{ assignment.subject }}
+                                        </td>
+                                        <td style="padding: 15px; border: none; border-bottom: 1px solid #f0f0f0;">
+                                            <i class="fas fa-calendar"></i> {{ assignment.due_date|date:"M d, Y" }}
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                {% else %}
+                    <div class="text-center" style="padding: 40px;">
+                        <i class="fas fa-clipboard-list" style="font-size: 48px; color: #ddd; margin-bottom: 15px;"></i>
+                        <p style="color: #999; font-size: 16px;">No assignments created yet</p>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    @keyframes float-particle {
+        0%, 100% {
+            transform: translate(0, 0) scale(1);
+            opacity: 0.6;
+        }
+        25% {
+            transform: translate(30px, -30px) scale(1.1);
+            opacity: 0.8;
+        }
+        50% {
+            transform: translate(0, -60px) scale(1);
+            opacity: 1;
+        }
+        75% {
+            transform: translate(-30px, -30px) scale(0.9);
+            opacity: 0.8;
+        }
+    }
+</style>
+{% endblock %}

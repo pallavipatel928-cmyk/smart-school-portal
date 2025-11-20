@@ -1,0 +1,657 @@
+{% extends "admin/index.html" %}
+{% load static %}
+
+{% block content %}
+
+<!-- Animated Hero Section with SVG Illustrations -->
+<div style="position: relative; margin: -20px -20px 30px -20px; padding: 60px 40px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); overflow: hidden;">
+    <!-- Floating Animated Elements -->
+    <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; pointer-events: none;">
+        <!-- Animated Books -->
+        <svg style="position: absolute; top: 20px; left: 5%; width: 60px; height: 60px; animation: float-up-down 4s ease-in-out infinite;" viewBox="0 0 100 100">
+            <rect x="20" y="30" width="60" height="50" fill="#FFD700" rx="5"/>
+            <rect x="25" y="35" width="50" height="40" fill="#FFA500" rx="3"/>
+            <line x1="50" y1="35" x2="50" y2="75" stroke="white" stroke-width="2"/>
+        </svg>
+        
+        <!-- Animated Graduation Cap -->
+        <svg style="position: absolute; top: 10%; right: 10%; width: 70px; height: 70px; animation: rotate-slow 20s linear infinite;" viewBox="0 0 100 100">
+            <polygon points="50,20 20,35 50,50 80,35" fill="white" opacity="0.8"/>
+            <polygon points="20,35 20,45 50,60 80,45 80,35" fill="rgba(255,255,255,0.6)"/>
+            <line x1="80" y1="35" x2="90" y2="40" stroke="white" stroke-width="2"/>
+            <circle cx="90" cy="40" r="4" fill="#FFD700"/>
+        </svg>
+        
+        <!-- Animated Pencil -->
+        <svg style="position: absolute; bottom: 15%; left: 15%; width: 50px; height: 50px; animation: pencil-write 3s ease-in-out infinite;" viewBox="0 0 100 100">
+            <rect x="30" y="20" width="15" height="60" fill="#FFA500" transform="rotate(45 50 50)"/>
+            <polygon points="35,75 40,80 45,75" fill="#FFD700" transform="rotate(45 50 50)"/>
+        </svg>
+        
+        <!-- Animated Stars -->
+        <svg style="position: absolute; top: 40%; right: 20%; width: 30px; height: 30px; animation: twinkle 2s ease-in-out infinite;" viewBox="0 0 100 100">
+            <polygon points="50,10 61,40 92,40 67,59 78,90 50,70 22,90 33,59 8,40 39,40" fill="white"/>
+        </svg>
+        
+        <!-- Animated Trophy -->
+        <svg style="position: absolute; bottom: 20%; right: 5%; width: 60px; height: 60px; animation: bounce-slow 3s ease-in-out infinite;" viewBox="0 0 100 100">
+            <ellipse cx="50" cy="30" rx="20" ry="15" fill="#FFD700"/>
+            <rect x="35" y="25" width="30" height="30" fill="#FFA500" rx="5"/>
+            <rect x="45" y="55" width="10" height="20" fill="#FFD700"/>
+            <rect x="35" y="75" width="30" height="5" fill="#FFA500"/>
+            <text x="50" y="45" text-anchor="middle" fill="white" font-size="20" font-weight="bold">1</text>
+        </svg>
+        
+        <!-- Animated Bulb (Ideas) -->
+        <svg style="position: absolute; top: 60%; left: 8%; width: 40px; height: 40px; animation: pulse-glow 2s ease-in-out infinite;" viewBox="0 0 100 100">
+            <circle cx="50" cy="40" r="20" fill="#FFD700" opacity="0.8"/>
+            <rect x="45" y="60" width="10" height="15" fill="white" rx="2"/>
+            <rect x="42" y="75" width="16" height="5" fill="white" rx="2"/>
+            <line x1="30" y1="30" x2="20" y2="20" stroke="white" stroke-width="3"/>
+            <line x1="70" y1="30" x2="80" y2="20" stroke="white" stroke-width="3"/>
+        </svg>
+    </div>
+    
+    <!-- Welcome Content -->
+    <div style="position: relative; z-index: 10; text-align: center; color: white;">
+        <div style="font-size: 60px; margin-bottom: 15px; animation: bounce 2s infinite;">
+            🎓
+        </div>
+        <h1 style="font-size: 36px; font-weight: 700; margin: 15px 0; text-shadow: 2px 2px 4px rgba(0,0,0,0.3);">Admin Control Center</h1>
+        <p style="font-size: 18px; margin: 10px 0; opacity: 0.95;">
+            <i class="fas fa-robot"></i> AI-Powered School Management System
+        </p>
+        <p style="font-size: 14px; margin: 5px 0; opacity: 0.85;">
+            Manage everything from students to exams with ease and efficiency
+        </p>
+    </div>
+</div>
+
+{{ block.super }}
+
+<style>
+    /* Beautiful Admin Dashboard Cards */
+    #content-main {
+        background: linear-gradient(to bottom right, #f8f9fa 0%, #e9ecef 100%);
+    }
+    
+    /* App List Styling */
+    .app-school {
+        background: white;
+        border-radius: 15px;
+        padding: 25px;
+        box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+        margin-bottom: 30px;
+        border: none;
+        transition: all 0.3s ease;
+    }
+    
+    .app-school:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 12px 30px rgba(102, 126, 234, 0.2);
+    }
+    
+    /* App Title */
+    .app-school caption {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+        color: white !important;
+        font-size: 20px !important;
+        font-weight: 700 !important;
+        padding: 15px 20px !important;
+        border-radius: 10px !important;
+        margin-bottom: 20px !important;
+        text-align: center;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+    
+    /* Model List */
+    .app-school tr {
+        border-bottom: 1px solid #e9ecef;
+        transition: all 0.2s ease;
+    }
+    
+    .app-school tr:hover {
+        background: linear-gradient(90deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%);
+        transform: translateX(5px);
+    }
+    
+    .app-school th {
+        padding: 15px 10px;
+        font-size: 16px;
+    }
+    
+    .app-school td {
+        padding: 10px;
+    }
+    
+    /* Action Links */
+    .app-school .addlink,
+    .app-school .changelink,
+    .app-school .viewlink {
+        display: inline-block;
+        padding: 8px 15px;
+        margin: 2px;
+        border-radius: 6px;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        font-weight: 500;
+    }
+    
+    .app-school .addlink {
+        background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+        color: white !important;
+    }
+    
+    .app-school .addlink:hover {
+        box-shadow: 0 4px 12px rgba(67, 233, 123, 0.4);
+        transform: translateY(-2px);
+    }
+    
+    .app-school .changelink {
+        background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        color: white !important;
+    }
+    
+    .app-school .changelink:hover {
+        box-shadow: 0 4px 12px rgba(79, 172, 254, 0.4);
+        transform: translateY(-2px);
+    }
+    
+    .app-school .viewlink {
+        background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        color: white !important;
+    }
+    
+    .app-school .viewlink:hover {
+        box-shadow: 0 4px 12px rgba(240, 147, 251, 0.4);
+        transform: translateY(-2px);
+    }
+    
+    /* Hide default icons and add custom ones */
+    .app-school .addlink::before,
+    .app-school .changelink::before,
+    .app-school .viewlink::before {
+        display: none;
+    }
+    
+    .app-school .addlink::after {
+        content: " ➕";
+    }
+    
+    .app-school .changelink::after {
+        content: " ✏️";
+    }
+    
+    .app-school .viewlink::after {
+        content: " 👁️";
+    }
+    
+    /* Stats Cards (if any) */
+    .module {
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    }
+    
+    /* Welcome Message */
+    #content h1 {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        font-size: 32px;
+        font-weight: 700;
+        margin-bottom: 30px;
+    }
+</style>
+
+<!-- Feature Boards Section -->
+<div style="margin: 40px auto; max-width: 1200px;">
+    <h2 style="text-align: center; font-size: 36px; font-weight: 800; margin-bottom: 40px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">
+        📊 School Management Boards
+    </h2>
+    
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px;">
+        <!-- Teachers Board -->
+        <div style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); border-radius: 20px; padding: 35px 30px; color: white; box-shadow: 0 10px 35px rgba(240, 147, 251, 0.4); position: relative; overflow: hidden; transition: all 0.3s; cursor: pointer; min-height: 300px; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center;" onmouseover="this.style.transform='translateY(-10px) scale(1.02)'; this.style.boxShadow='0 15px 45px rgba(240, 147, 251, 0.6)';" onmouseout="this.style.transform='translateY(0) scale(1)'; this.style.boxShadow='0 10px 35px rgba(240, 147, 251, 0.4)';">
+            <!-- Animated Background Pattern -->
+            <svg style="position: absolute; bottom: -40px; right: -40px; width: 180px; height: 180px; opacity: 0.15; animation: rotate-slow 20s linear infinite;" viewBox="0 0 100 100">
+                <circle cx="50" cy="50" r="42" fill="none" stroke="white" stroke-width="2.5"/>
+                <circle cx="50" cy="50" r="32" fill="none" stroke="white" stroke-width="2"/>
+                <circle cx="50" cy="50" r="22" fill="none" stroke="white" stroke-width="1.5"/>
+                <rect x="28" y="47" width="44" height="4" fill="white"/>
+                <circle cx="35" cy="32" r="9" fill="white"/>
+                <rect x="31" y="41" width="8" height="18" fill="white"/>
+            </svg>
+            <div style="position: absolute; top: 30px; left: 30px; width: 70px; height: 70px; background: rgba(255,255,255,0.12); border-radius: 50%; animation: pulse-glow 3s ease-in-out infinite;"></div>
+            <div style="position: absolute; bottom: 40px; right: 45px; width: 55px; height: 55px; background: rgba(255,255,255,0.1); border-radius: 50%; animation: pulse-glow 3s ease-in-out infinite 1.5s;"></div>
+            <div style="position: relative; z-index: 10;">
+                <div style="font-size: 80px; margin-bottom: 18px; animation: float-up-down 3s ease-in-out infinite;">👨‍🏫</div>
+                <h3 style="font-size: 30px; font-weight: 800; margin: 15px 0; text-shadow: 2px 2px 6px rgba(0,0,0,0.3); letter-spacing: 1px;">Teachers Board</h3>
+                <p style="font-size: 16px; opacity: 0.95; margin-bottom: 22px; line-height: 1.6;">Manage educators &<br>faculty members</p>
+                <a href="/admin/school/teacher/" style="display: inline-block; padding: 14px 35px; background: white; color: #f5576c; border-radius: 30px; text-decoration: none; font-weight: 800; font-size: 15px; transition: all 0.3s; box-shadow: 0 5px 15px rgba(0,0,0,0.2);" onmouseover="this.style.transform='scale(1.1)'; this.style.boxShadow='0 8px 22px rgba(0,0,0,0.3)';" onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 5px 15px rgba(0,0,0,0.2)';">View Teachers →</a>
+            </div>
+        </div>
+        
+        <!-- Students Board -->
+        <div style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); border-radius: 20px; padding: 35px 30px; color: white; box-shadow: 0 10px 35px rgba(79, 172, 254, 0.4); position: relative; overflow: hidden; transition: all 0.3s; cursor: pointer; min-height: 300px; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center;" onmouseover="this.style.transform='translateY(-10px) scale(1.02)'; this.style.boxShadow='0 15px 45px rgba(79, 172, 254, 0.6)';" onmouseout="this.style.transform='translateY(0) scale(1)'; this.style.boxShadow='0 10px 35px rgba(79, 172, 254, 0.4)';">
+            <!-- Animated Background Pattern -->
+            <svg style="position: absolute; bottom: -40px; right: -40px; width: 180px; height: 180px; opacity: 0.15; animation: float-up-down 4s ease-in-out infinite;" viewBox="0 0 100 100">
+                <polygon points="50,18 28,38 50,62 72,38" fill="white"/>
+                <rect x="44" y="62" width="12" height="28" fill="white"/>
+                <circle cx="50" cy="38" r="15" fill="none" stroke="white" stroke-width="2.5"/>
+                <circle cx="50" cy="38" r="8" fill="none" stroke="white" stroke-width="2"/>
+                <line x1="25" y1="90" x2="75" y2="90" stroke="white" stroke-width="4"/>
+            </svg>
+            <div style="position: absolute; top: 30px; right: 30px; width: 70px; height: 70px; background: rgba(255,255,255,0.12); border-radius: 50%; animation: pulse-glow 3s ease-in-out infinite 1s;"></div>
+            <div style="position: absolute; bottom: 40px; left: 45px; width: 55px; height: 55px; background: rgba(255,255,255,0.1); border-radius: 50%; animation: pulse-glow 3s ease-in-out infinite 2.5s;"></div>
+            <div style="position: relative; z-index: 10;">
+                <div style="font-size: 80px; margin-bottom: 18px; animation: bounce-slow 3s ease-in-out infinite;">🎓</div>
+                <h3 style="font-size: 30px; font-weight: 800; margin: 15px 0; text-shadow: 2px 2px 6px rgba(0,0,0,0.3); letter-spacing: 1px;">Students Board</h3>
+                <p style="font-size: 16px; opacity: 0.95; margin-bottom: 22px; line-height: 1.6;">Manage student records<br>& enrollments</p>
+                <a href="/admin/school/student/" style="display: inline-block; padding: 14px 35px; background: white; color: #00f2fe; border-radius: 30px; text-decoration: none; font-weight: 800; font-size: 15px; transition: all 0.3s; box-shadow: 0 5px 15px rgba(0,0,0,0.2);" onmouseover="this.style.transform='scale(1.1)'; this.style.boxShadow='0 8px 22px rgba(0,0,0,0.3)';" onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 5px 15px rgba(0,0,0,0.2)';">View Students →</a>
+            </div>
+        </div>
+        
+        <!-- Notice Board -->
+        <div style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); border-radius: 20px; padding: 35px 30px; color: white; box-shadow: 0 10px 35px rgba(67, 233, 123, 0.4); position: relative; overflow: hidden; transition: all 0.3s; cursor: pointer; min-height: 300px; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center;" onmouseover="this.style.transform='translateY(-10px) scale(1.02)'; this.style.boxShadow='0 15px 45px rgba(67, 233, 123, 0.6)';" onmouseout="this.style.transform='translateY(0) scale(1)'; this.style.boxShadow='0 10px 35px rgba(67, 233, 123, 0.4)';">
+            <!-- Animated Background Pattern -->
+            <svg style="position: absolute; bottom: -40px; right: -40px; width: 180px; height: 180px; opacity: 0.15;" viewBox="0 0 100 100">
+                <rect x="15" y="15" width="70" height="70" fill="none" stroke="white" stroke-width="2.5" rx="6"/>
+                <line x1="25" y1="30" x2="75" y2="30" stroke="white" stroke-width="3.5"/>
+                <line x1="25" y1="45" x2="75" y2="45" stroke="white" stroke-width="3.5"/>
+                <line x1="25" y1="60" x2="65" y2="60" stroke="white" stroke-width="3.5"/>
+                <line x1="25" y1="75" x2="70" y2="75" stroke="white" stroke-width="3.5"/>
+                <circle cx="20" cy="30" r="2.5" fill="white"/>
+                <circle cx="20" cy="45" r="2.5" fill="white"/>
+                <circle cx="20" cy="60" r="2.5" fill="white"/>
+                <circle cx="20" cy="75" r="2.5" fill="white"/>
+            </svg>
+            <div style="position: absolute; bottom: 40px; left: 40px; width: 65px; height: 65px; background: rgba(255,255,255,0.12); border-radius: 50%; animation: pulse-glow 3s ease-in-out infinite 2s;"></div>
+            <div style="position: absolute; top: 35px; right: 50px; width: 50px; height: 50px; background: rgba(255,255,255,0.1); border-radius: 50%; animation: pulse-glow 3s ease-in-out infinite 3.5s;"></div>
+            <div style="position: relative; z-index: 10;">
+                <div style="font-size: 80px; margin-bottom: 18px; animation: twinkle 2s ease-in-out infinite;">📢</div>
+                <h3 style="font-size: 30px; font-weight: 800; margin: 15px 0; text-shadow: 2px 2px 6px rgba(0,0,0,0.3); letter-spacing: 1px;">Notice Board</h3>
+                <p style="font-size: 16px; opacity: 0.95; margin-bottom: 22px; line-height: 1.6;">Post important<br>announcements</p>
+                <a href="/admin/school/notice/" style="display: inline-block; padding: 14px 35px; background: white; color: #38f9d7; border-radius: 30px; text-decoration: none; font-weight: 800; font-size: 15px; transition: all 0.3s; box-shadow: 0 5px 15px rgba(0,0,0,0.2);" onmouseover="this.style.transform='scale(1.1)'; this.style.boxShadow='0 8px 22px rgba(0,0,0,0.3)';" onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 5px 15px rgba(0,0,0,0.2)';">View Notices →</a>
+            </div>
+        </div>
+        
+        <!-- Library Board -->
+        <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 20px; padding: 35px 30px; color: white; box-shadow: 0 10px 35px rgba(102, 126, 234, 0.4); position: relative; overflow: hidden; transition: all 0.3s; cursor: pointer; min-height: 300px; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center;" onmouseover="this.style.transform='translateY(-10px) scale(1.02)'; this.style.boxShadow='0 15px 45px rgba(102, 126, 234, 0.6)';" onmouseout="this.style.transform='translateY(0) scale(1)'; this.style.boxShadow='0 10px 35px rgba(102, 126, 234, 0.4)';">
+            <!-- Animated Background Pattern -->
+            <svg style="position: absolute; bottom: -40px; right: -40px; width: 180px; height: 180px; opacity: 0.15; animation: float-up-down 5s ease-in-out infinite;" viewBox="0 0 100 100">
+                <rect x="22" y="22" width="56" height="68" fill="none" stroke="white" stroke-width="2.5" rx="4"/>
+                <line x1="50" y1="22" x2="50" y2="90" stroke="white" stroke-width="2.5"/>
+                <rect x="32" y="32" width="36" height="48" fill="none" stroke="white" stroke-width="2" rx="3"/>
+                <line x1="38" y1="40" x2="62" y2="40" stroke="white" stroke-width="1.5"/>
+                <line x1="38" y1="50" x2="62" y2="50" stroke="white" stroke-width="1.5"/>
+                <line x1="38" y1="60" x2="62" y2="60" stroke="white" stroke-width="1.5"/>
+                <line x1="38" y1="70" x2="62" y2="70" stroke="white" stroke-width="1.5"/>
+            </svg>
+            <div style="position: absolute; top: 35px; right: 40px; width: 70px; height: 70px; background: rgba(255,255,255,0.12); border-radius: 50%; animation: pulse-glow 3s ease-in-out infinite 1.5s;"></div>
+            <div style="position: absolute; bottom: 45px; left: 42px; width: 58px; height: 58px; background: rgba(255,255,255,0.1); border-radius: 50%; animation: pulse-glow 3s ease-in-out infinite 3s;"></div>
+            <div style="position: relative; z-index: 10;">
+                <div style="font-size: 80px; margin-bottom: 18px; animation: float-up-down 4s ease-in-out infinite;">📚</div>
+                <h3 style="font-size: 30px; font-weight: 800; margin: 15px 0; text-shadow: 2px 2px 6px rgba(0,0,0,0.3); letter-spacing: 1px;">Library</h3>
+                <p style="font-size: 16px; opacity: 0.95; margin-bottom: 22px; line-height: 1.6;">Manage books &<br>resources</p>
+                <a href="/admin/school/librarybook/" style="display: inline-block; padding: 14px 35px; background: white; color: #764ba2; border-radius: 30px; text-decoration: none; font-weight: 800; font-size: 15px; transition: all 0.3s; box-shadow: 0 5px 15px rgba(0,0,0,0.2);" onmouseover="this.style.transform='scale(1.1)'; this.style.boxShadow='0 8px 22px rgba(0,0,0,0.3)';" onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 5px 15px rgba(0,0,0,0.2)';">View Library →</a>
+            </div>
+        </div>
+        
+        <!-- Meeting Portal Board -->
+        <div style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); border-radius: 20px; padding: 35px 30px; color: white; box-shadow: 0 10px 35px rgba(250, 112, 154, 0.4); position: relative; overflow: hidden; transition: all 0.3s; cursor: pointer; min-height: 300px; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center;" onmouseover="this.style.transform='translateY(-10px) scale(1.02)'; this.style.boxShadow='0 15px 45px rgba(250, 112, 154, 0.6)';" onmouseout="this.style.transform='translateY(0) scale(1)'; this.style.boxShadow='0 10px 35px rgba(250, 112, 154, 0.4)';">
+            <!-- Animated Background Pattern -->
+            <svg style="position: absolute; bottom: -40px; right: -40px; width: 180px; height: 180px; opacity: 0.15; animation: rotate-slow 25s linear infinite;" viewBox="0 0 100 100">
+                <circle cx="50" cy="50" r="40" fill="none" stroke="white" stroke-width="2.5"/>
+                <circle cx="50" cy="50" r="30" fill="none" stroke="white" stroke-width="2"/>
+                <circle cx="35" cy="35" r="8" fill="white"/>
+                <circle cx="65" cy="35" r="8" fill="white"/>
+                <circle cx="50" cy="65" r="8" fill="white"/>
+                <line x1="35" y1="35" x2="65" y2="35" stroke="white" stroke-width="2"/>
+                <line x1="35" y1="35" x2="50" y2="65" stroke="white" stroke-width="2"/>
+                <line x1="65" y1="35" x2="50" y2="65" stroke="white" stroke-width="2"/>
+            </svg>
+            <div style="position: absolute; top: 30px; left: 35px; width: 65px; height: 65px; background: rgba(255,255,255,0.12); border-radius: 50%; animation: pulse-glow 3s ease-in-out infinite 0.5s;"></div>
+            <div style="position: absolute; bottom: 40px; right: 40px; width: 55px; height: 55px; background: rgba(255,255,255,0.1); border-radius: 50%; animation: pulse-glow 3s ease-in-out infinite 2s;"></div>
+            <div style="position: relative; z-index: 10;">
+                <div style="font-size: 80px; margin-bottom: 18px; animation: bounce-slow 3.5s ease-in-out infinite;">🤝</div>
+                <h3 style="font-size: 30px; font-weight: 800; margin: 15px 0; text-shadow: 2px 2px 6px rgba(0,0,0,0.3); letter-spacing: 1px;">Meeting Portal</h3>
+                <p style="font-size: 16px; opacity: 0.95; margin-bottom: 22px; line-height: 1.6;">Schedule & manage<br>school meetings</p>
+                <a href="/meetings/" style="display: inline-block; padding: 14px 35px; background: white; color: #fa709a; border-radius: 30px; text-decoration: none; font-weight: 800; font-size: 15px; transition: all 0.3s; box-shadow: 0 5px 15px rgba(0,0,0,0.2);" onmouseover="this.style.transform='scale(1.1)'; this.style.boxShadow='0 8px 22px rgba(0,0,0,0.3)';" onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 5px 15px rgba(0,0,0,0.2)';">Open Portal →</a>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- Main Dashboard Layout -->
+<div style="display: grid; grid-template-columns: 2fr 1fr; gap: 30px; margin: 30px 0;">
+    <!-- Left Column: Main Features & AI Insights -->
+    <div>
+        <!-- AI Smart Insights Section -->
+        <div style="background: white; border-radius: 15px; padding: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); margin-bottom: 20px;">
+            <div style="display: flex; align-items: center; margin-bottom: 15px;">
+                <div style="width: 45px; height: 45px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 10px; display: flex; align-items: center; justify-content: center; margin-right: 12px;">
+                    <i class="fas fa-brain" style="color: white; font-size: 20px;"></i>
+                </div>
+                <div>
+                    <h3 style="color: #667eea; font-size: 18px; font-weight: 700; margin: 0;">
+                        🤖 AI Smart Insights
+                    </h3>
+                    <p style="margin: 3px 0 0 0; color: #6b7280; font-size: 12px;">Real-time Analytics</p>
+                </div>
+            </div>
+            
+            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;">
+                <!-- Real-time Analytics -->
+                <div style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); border-radius: 10px; padding: 15px; color: white; position: relative; overflow: hidden;">
+                    <div style="position: absolute; top: -15px; right: -15px; width: 60px; height: 60px; background: rgba(255,255,255,0.1); border-radius: 50%;"></div>
+                    <div style="position: relative; z-index: 10;">
+                        <div style="font-size: 24px; margin-bottom: 8px;">📊</div>
+                        <div style="font-size: 22px; font-weight: 700; margin-bottom: 3px;">87%</div>
+                        <div style="font-size: 11px; opacity: 0.9;">Attendance Rate</div>
+                        <div style="margin-top: 8px; padding-top: 8px; border-top: 1px solid rgba(255,255,255,0.3); font-size: 10px;">
+                            <i class="fas fa-arrow-up"></i> +5% this week
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Performance Score -->
+                <div style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); border-radius: 10px; padding: 15px; color: white; position: relative; overflow: hidden;">
+                    <div style="position: absolute; top: -15px; right: -15px; width: 60px; height: 60px; background: rgba(255,255,255,0.1); border-radius: 50%;"></div>
+                    <div style="position: relative; z-index: 10;">
+                        <div style="font-size: 24px; margin-bottom: 8px;">🎯</div>
+                        <div style="font-size: 22px; font-weight: 700; margin-bottom: 3px;">92%</div>
+                        <div style="font-size: 11px; opacity: 0.9;">Avg Performance</div>
+                        <div style="margin-top: 8px; padding-top: 8px; border-top: 1px solid rgba(255,255,255,0.3); font-size: 10px;">
+                            <i class="fas fa-trophy"></i> Excellent!
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Active Users -->
+                <div style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); border-radius: 10px; padding: 15px; color: white; position: relative; overflow: hidden;">
+                    <div style="position: absolute; top: -15px; right: -15px; width: 60px; height: 60px; background: rgba(255,255,255,0.1); border-radius: 50%;"></div>
+                    <div style="position: relative; z-index: 10;">
+                        <div style="font-size: 24px; margin-bottom: 8px;">👥</div>
+                        <div style="font-size: 22px; font-weight: 700; margin-bottom: 3px;">248</div>
+                        <div style="font-size: 11px; opacity: 0.9;">Active Students</div>
+                        <div style="margin-top: 8px; padding-top: 8px; border-top: 1px solid rgba(255,255,255,0.3); font-size: 10px;">
+                            <i class="fas fa-users"></i> 95% online
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Smart Quick Actions -->
+        <div style="background: white; border-radius: 15px; padding: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.08);">
+            <h3 style="color: #667eea; font-size: 18px; font-weight: 700; margin-bottom: 15px;">
+                <i class="fas fa-bolt"></i> Smart Quick Actions
+            </h3>
+            <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px;">
+                <a href="/admin/school/student/add/" style="display: flex; align-items: center; padding: 12px; background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white; border-radius: 8px; text-decoration: none; transition: transform 0.3s;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">
+                    <span style="font-size: 24px; margin-right: 12px;">➕</span>
+                    <div>
+                        <div style="font-weight: 700; font-size: 13px;">Add Student</div>
+                        <div style="font-size: 11px; opacity: 0.9;">New enrollment</div>
+                    </div>
+                </a>
+                <a href="/admin/school/teacher/add/" style="display: flex; align-items: center; padding: 12px; background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); color: white; border-radius: 8px; text-decoration: none; transition: transform 0.3s;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">
+                    <span style="font-size: 24px; margin-right: 12px;">👨‍🏫</span>
+                    <div>
+                        <div style="font-weight: 700; font-size: 13px;">Add Teacher</div>
+                        <div style="font-size: 11px; opacity: 0.9;">New staff member</div>
+                    </div>
+                </a>
+                <a href="/admin/school/notice/add/" style="display: flex; align-items: center; padding: 12px; background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); color: white; border-radius: 8px; text-decoration: none; transition: transform 0.3s;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">
+                    <span style="font-size: 24px; margin-right: 12px;">📢</span>
+                    <div>
+                        <div style="font-weight: 700; font-size: 13px;">Post Notice</div>
+                        <div style="font-size: 11px; opacity: 0.9;">New announcement</div>
+                    </div>
+                </a>
+                <a href="/admin/school/exam/add/" style="display: flex; align-items: center; padding: 12px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border-radius: 8px; text-decoration: none; transition: transform 0.3s;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">
+                    <span style="font-size: 24px; margin-right: 12px;">📋</span>
+                    <div>
+                        <div style="font-weight: 700; font-size: 13px;">Schedule Exam</div>
+                        <div style="font-size: 11px; opacity: 0.9;">New examination</div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Right Column: AI Assistant & Live Activity -->
+    <div>
+        <!-- Smart Assistant -->
+        <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 15px; padding: 20px; color: white; box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3); position: relative; overflow: hidden; margin-bottom: 15px;">
+            <!-- Animated Background -->
+            <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;">
+                <div style="position: absolute; width: 80px; height: 80px; background: rgba(255,255,255,0.1); border-radius: 50%; top: -20px; right: -20px; animation: pulse-glow 3s ease-in-out infinite;"></div>
+                <div style="position: absolute; width: 50px; height: 50px; background: rgba(255,255,255,0.1); border-radius: 50%; bottom: 15px; left: -15px; animation: pulse-glow 4s ease-in-out infinite 1s;"></div>
+            </div>
+            
+            <!-- AI Assistant Content -->
+            <div style="position: relative; z-index: 10;">
+                <div style="display: flex; align-items: center; margin-bottom: 15px;">
+                    <div style="width: 50px; height: 50px; background: rgba(255,255,255,0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 12px; animation: pulse-glow 2s ease-in-out infinite;">
+                        <i class="fas fa-robot" style="font-size: 24px;"></i>
+                    </div>
+                    <div>
+                        <h4 style="font-size: 16px; font-weight: 700; margin: 0;">🤖 AI Assistant</h4>
+                        <p style="font-size: 12px; opacity: 0.9; margin: 3px 0 0 0;">Smart recommendations</p>
+                    </div>
+                </div>
+                
+                <!-- AI Suggestions -->
+                <div style="background: rgba(255,255,255,0.15); border-radius: 8px; padding: 12px; margin: 8px 0; backdrop-filter: blur(10px);">
+                    <div style="font-size: 12px; margin-bottom: 5px;">💡 <strong>Smart Tip:</strong></div>
+                    <div style="font-size: 11px; opacity: 0.95; line-height: 1.4;">15 students have low attendance. Send automated reminders.</div>
+                </div>
+                
+                <div style="background: rgba(255,255,255,0.15); border-radius: 8px; padding: 12px; margin: 8px 0; backdrop-filter: blur(10px);">
+                    <div style="font-size: 12px; margin-bottom: 5px;">📊 <strong>Insight:</strong></div>
+                    <div style="font-size: 11px; opacity: 0.95; line-height: 1.4;">Math subject needs support - avg score 68%.</div>
+                </div>
+                
+                <button style="width: 100%; padding: 10px; background: white; color: #667eea; border: none; border-radius: 8px; font-weight: 700; font-size: 13px; margin-top: 10px; cursor: pointer; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.03)'" onmouseout="this.style.transform='scale(1)'">
+                    <i class="fas fa-comments"></i> Ask AI Assistant
+                </button>
+            </div>
+        </div>
+        
+        <!-- Real-Time Activity Feed -->
+        <div style="background: white; border-radius: 15px; padding: 18px; box-shadow: 0 4px 12px rgba(0,0,0,0.08);">
+            <h4 style="color: #667eea; font-size: 16px; font-weight: 700; margin-bottom: 12px;">
+                <i class="fas fa-stream"></i> Live Activity
+            </h4>
+            
+            <div style="max-height: 280px; overflow-y: auto;">
+                <!-- Activity Item 1 -->
+                <div style="display: flex; align-items: start; padding: 10px; border-left: 3px solid #4ade80; background: #f0fdf4; border-radius: 6px; margin-bottom: 8px;">
+                    <div style="width: 30px; height: 30px; background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 10px; color: white; font-size: 12px;">
+                        ✓
+                    </div>
+                    <div style="flex: 1;">
+                        <div style="font-weight: 600; font-size: 12px; color: #065f46;">New Student Enrolled</div>
+                        <div style="font-size: 10px; color: #6b7280; margin-top: 2px;">John Doe - Class 10A</div>
+                        <div style="font-size: 9px; color: #9ca3af; margin-top: 3px;"><i class="fas fa-clock"></i> 2 mins ago</div>
+                    </div>
+                </div>
+                
+                <!-- Activity Item 2 -->
+                <div style="display: flex; align-items: start; padding: 10px; border-left: 3px solid #60a5fa; background: #eff6ff; border-radius: 6px; margin-bottom: 8px;">
+                    <div style="width: 30px; height: 30px; background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 10px; color: white; font-size: 12px;">
+                        📝
+                    </div>
+                    <div style="flex: 1;">
+                        <div style="font-weight: 600; font-size: 12px; color: #1e40af;">Assignment Submitted</div>
+                        <div style="font-size: 10px; color: #6b7280; margin-top: 2px;">Math Assignment - 25 submissions</div>
+                        <div style="font-size: 9px; color: #9ca3af; margin-top: 3px;"><i class="fas fa-clock"></i> 15 mins ago</div>
+                    </div>
+                </div>
+                
+                <!-- Activity Item 3 -->
+                <div style="display: flex; align-items: start; padding: 10px; border-left: 3px solid #f472b6; background: #fdf2f8; border-radius: 6px; margin-bottom: 8px;">
+                    <div style="width: 30px; height: 30px; background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 10px; color: white; font-size: 12px;">
+                        📢
+                    </div>
+                    <div style="flex: 1;">
+                        <div style="font-weight: 600; font-size: 12px; color: #9f1239;">Notice Posted</div>
+                        <div style="font-size: 10px; color: #6b7280; margin-top: 2px;">Holiday Announcement</div>
+                        <div style="font-size: 9px; color: #9ca3af; margin-top: 3px;"><i class="fas fa-clock"></i> 1 hour ago</div>
+                    </div>
+                </div>
+                
+                <!-- Activity Item 4 -->
+                <div style="display: flex; align-items: start; padding: 10px; border-left: 3px solid #fbbf24; background: #fffbeb; border-radius: 6px;">
+                    <div style="width: 30px; height: 30px; background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 10px; color: white; font-size: 12px;">
+                        🎓
+                    </div>
+                    <div style="flex: 1;">
+                        <div style="font-weight: 600; font-size: 12px; color: #92400e;">Exam Scheduled</div>
+                        <div style="font-size: 10px; color: #6b7280; margin-top: 2px;">Mid-term Math - Dec 15</div>
+                        <div style="font-size: 9px; color: #9ca3af; margin-top: 3px;"><i class="fas fa-clock"></i> 2 hours ago</div>
+                    </div>
+                </div>
+            </div>
+            
+            <button style="width: 100%; padding: 8px; background: transparent; color: #667eea; border: 2px solid #667eea; border-radius: 8px; font-weight: 600; font-size: 12px; margin-top: 12px; cursor: pointer; transition: all 0.3s;" onmouseover="this.style.background='#667eea'; this.style.color='white';" onmouseout="this.style.background='transparent'; this.style.color='#667eea';">
+                View All Activities
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Smart Technology Features -->
+<div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; margin: 30px 0;">
+    <!-- Voice Commands -->
+    <div style="background: white; border-radius: 10px; padding: 18px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); text-align: center; transition: transform 0.3s;" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform='translateY(0)'">
+        <div style="width: 50px; height: 50px; background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 12px; color: white; font-size: 22px;">
+            🎤
+        </div>
+        <h5 style="font-size: 14px; font-weight: 700; color: #1f2937; margin-bottom: 6px;">Voice Commands</h5>
+        <p style="font-size: 11px; color: #6b7280; margin-bottom: 10px;">Control with voice</p>
+        <div style="display: inline-block; padding: 4px 10px; background: #fef3c7; color: #92400e; border-radius: 12px; font-size: 10px; font-weight: 600;">
+            Coming Soon
+        </div>
+    </div>
+    
+    <!-- Auto Reports -->
+    <div style="background: white; border-radius: 10px; padding: 18px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); text-align: center; transition: transform 0.3s;" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform='translateY(0)'">
+        <div style="width: 50px; height: 50px; background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 12px; color: white; font-size: 22px;">
+            📊
+        </div>
+        <h5 style="font-size: 14px; font-weight: 700; color: #1f2937; margin-bottom: 6px;">Auto Reports</h5>
+        <p style="font-size: 11px; color: #6b7280; margin-bottom: 10px;">AI-generated insights</p>
+        <div style="display: inline-block; padding: 4px 10px; background: #d1fae5; color: #065f46; border-radius: 12px; font-size: 10px; font-weight: 600;">
+            Active
+        </div>
+    </div>
+    
+    <!-- Smart Notifications -->
+    <div style="background: white; border-radius: 10px; padding: 18px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); text-align: center; transition: transform 0.3s;" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform='translateY(0)'">
+        <div style="width: 50px; height: 50px; background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 12px; color: white; font-size: 22px;">
+            🔔
+        </div>
+        <h5 style="font-size: 14px; font-weight: 700; color: #1f2937; margin-bottom: 6px;">Smart Alerts</h5>
+        <p style="font-size: 11px; color: #6b7280; margin-bottom: 10px;">Intelligent reminders</p>
+        <div style="display: inline-block; padding: 4px 10px; background: #d1fae5; color: #065f46; border-radius: 12px; font-size: 10px; font-weight: 600;">
+            Active
+        </div>
+    </div>
+    
+    <!-- Predictive Analytics -->
+    <div style="background: white; border-radius: 10px; padding: 18px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); text-align: center; transition: transform 0.3s;" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform='translateY(0)'">
+        <div style="width: 50px; height: 50px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 12px; color: white; font-size: 22px;">
+            🔮
+        </div>
+        <h5 style="font-size: 14px; font-weight: 700; color: #1f2937; margin-bottom: 6px;">Predictive AI</h5>
+        <p style="font-size: 11px; color: #6b7280; margin-bottom: 10px;">Future trends</p>
+        <div style="display: inline-block; padding: 4px 10px; background: #ddd6fe; color: #5b21b6; border-radius: 12px; font-size: 10px; font-weight: 600;">
+            Beta
+        </div>
+    </div>
+</div>
+
+<style>
+    @keyframes bounce {
+        0%, 100% {
+            transform: translateY(0);
+        }
+        50% {
+            transform: translateY(-20px);
+        }
+    }
+    
+    @keyframes float-up-down {
+        0%, 100% {
+            transform: translateY(0) rotate(0deg);
+        }
+        50% {
+            transform: translateY(-30px) rotate(10deg);
+        }
+    }
+    
+    @keyframes rotate-slow {
+        from {
+            transform: rotate(0deg);
+        }
+        to {
+            transform: rotate(360deg);
+        }
+    }
+    
+    @keyframes pencil-write {
+        0%, 100% {
+            transform: translateX(0) rotate(0deg);
+        }
+        50% {
+            transform: translateX(10px) rotate(-5deg);
+        }
+    }
+    
+    @keyframes twinkle {
+        0%, 100% {
+            opacity: 0.3;
+            transform: scale(1);
+        }
+        50% {
+            opacity: 1;
+            transform: scale(1.3);
+        }
+    }
+    
+    @keyframes bounce-slow {
+        0%, 100% {
+            transform: translateY(0);
+        }
+        50% {
+            transform: translateY(-15px);
+        }
+    }
+    
+    @keyframes pulse-glow {
+        0%, 100% {
+            opacity: 0.6;
+            transform: scale(1);
+        }
+        50% {
+            opacity: 1;
+            transform: scale(1.1);
+        }
+    }
+    
+    .floating-book {
+        animation: float-up-down 3s ease-in-out infinite;
+    }
+    
+    .floating-cap {
+        animation: float-up-down 4s ease-in-out infinite 0.5s;
+    }
+</style>
+
+{% endblock %}

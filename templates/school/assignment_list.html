@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+{% block title %}Assignments - Smart School Portal{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2><i class="fas fa-tasks"></i> Assignments</h2>
+    {% if user.role == 'teacher' or user.is_staff %}
+        <a href="{% url 'assignment_create' %}" class="btn btn-primary">
+            <i class="fas fa-plus"></i> Create Assignment
+        </a>
+    {% endif %}
+</div>
+
+<div class="row">
+    {% for assignment in assignments %}
+        <div class="col-md-6 mb-3">
+            <div class="card h-100">
+                <div class="card-header">
+                    <h5 class="mb-0">{{ assignment.title }}</h5>
+                </div>
+                <div class="card-body">
+                    <p class="card-text">{{ assignment.description|truncatewords:20 }}</p>
+                    <p class="mb-1"><strong>Subject:</strong> {{ assignment.subject|default:"N/A" }}</p>
+                    <p class="mb-1"><strong>Class:</strong> {{ assignment.classroom|default:"N/A" }}</p>
+                    <p class="mb-1"><strong>Due Date:</strong> 
+                        <span class="{% if assignment.due_date < today %}text-danger{% endif %}">
+                            {{ assignment.due_date|default:"No deadline" }}
+                        </span>
+                    </p>
+                    <p class="mb-1"><strong>Total Marks:</strong> {{ assignment.total_marks }}</p>
+                </div>
+                <div class="card-footer">
+                    <a href="{% url 'assignment_detail' assignment.pk %}" class="btn btn-sm btn-primary">
+                        <i class="fas fa-eye"></i> View Details
+                    </a>
+                    {% if user.role == 'student' %}
+                        <a href="{% url 'submit_assignment' assignment.pk %}" class="btn btn-sm btn-success">
+                            <i class="fas fa-upload"></i> Submit
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    {% empty %}
+        <div class="col-12">
+            <div class="alert alert-info">
+                <i class="fas fa-info-circle"></i> No assignments available.
+            </div>
+        </div>
+    {% endfor %}
+</div>
+{% endblock %}
