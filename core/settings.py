@@ -14,6 +14,7 @@ import os
 from pathlib import Path
 import dj_database_url
 from decouple import config
+from django.core.wsgi import get_wsgi_application
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -29,7 +30,7 @@ SECRET_KEY = config('SECRET_KEY', default='django-insecure-your-secret-key-chang
 DEBUG = config('DEBUG', default=True, cast=bool)
 
 ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='localhost,127.0.0.1', cast=lambda v: [s.strip() for s in v.split(',')])
-
+ALLOWED_HOST= ['127.0.0.1','.vercel.app']
 
 # Application definition
 
@@ -76,8 +77,8 @@ TEMPLATES = [
         },
     },
 ]
-
-WSGI_APPLICATION = 'core.wsgi.application'
+app=get_wsgi_application()
+WSGI_APPLICATION = 'core.wsgi.app'
 
 
 # Database
