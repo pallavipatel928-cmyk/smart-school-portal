@@ -15,10 +15,5 @@
       "src": "/(.*)",
       "dest": "vercel_wsgi.py"
     }
-  ],
-  "env": {
-    "DJANGO_SETTINGS_MODULE": "core.settings",
-    "SECRET_KEY": "your-vercel-secret-key-change-this-in-vercel-dashboard",
-    "DEBUG": "False"
-  }
+  ]
 }
