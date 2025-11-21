@@ -891,7 +891,7 @@ class Meeting(models.Model):
         """Check if meeting is in the future"""
         from datetime import datetime
         meeting_datetime = datetime.combine(self.meeting_date, self.start_time)
-        return meeting_datetime > timezone.now() and self.status == 'scheduled'
+        return meeting_datetime > timezone.now().replace(tzinfo=None) and self.status == 'scheduled'
     
     def is_today(self):
         """Check if meeting is today"""
