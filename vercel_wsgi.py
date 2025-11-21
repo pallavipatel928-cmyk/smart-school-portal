@@ -22,6 +22,9 @@ try:
     # Create the WSGI application
     application = get_wsgi_application()
     
+    # Vercel expects a 'handler' variable
+    handler = application
+    
 except Exception as e:
     print(f"Error during Django setup: {e}")
     import traceback
@@ -33,3 +36,6 @@ except Exception as e:
         headers = [('Content-type', 'text/plain')]
         start_response(status, headers)
         return [b'Application initialization failed. Check logs for details.']
+    
+    # Vercel expects a 'handler' variable
+    handler = application
