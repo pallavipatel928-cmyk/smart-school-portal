@@ -30,9 +30,9 @@ def handler(request, response):
         
         # Convert Vercel request to WSGI environ
         environ = {
-            'REQUEST_METHOD': request.method,
-            'PATH_INFO': request.path,
-            'QUERY_STRING': request.query,
+            'REQUEST_METHOD': getattr(request, 'method', 'GET'),
+            'PATH_INFO': getattr(request, 'path', '/'),
+            'QUERY_STRING': getattr(request, 'query', ''),
             'CONTENT_TYPE': request.headers.get('content-type', ''),
             'CONTENT_LENGTH': request.headers.get('content-length', ''),
             'SERVER_NAME': 'localhost',
@@ -40,16 +40,16 @@ def handler(request, response):
             'SERVER_PROTOCOL': 'HTTP/1.1',
             'wsgi.version': (1, 0),
             'wsgi.url_scheme': 'http',
-            'wsgi.input': StringIO(request.body.decode('utf-8') if request.body else ''),
+            'wsgi.input': StringIO(getattr(request, 'body', b'').decode('utf-8') if getattr(request, 'body', b'') else ''),
             'wsgi.errors': StringIO(),
             'wsgi.multithread': False,
             'wsgi.multiprocess': False,
             'wsgi.run_once': False,
-            'wsgi.headers': request.headers,
+            'wsgi.headers': getattr(request, 'headers', {}),
         }
         
         # Add HTTP headers
-        for key, value in request.headers.items():
+        for key, value in getattr(request, 'headers', {}).items():
             environ[f'HTTP_{key.upper().replace("-", "_")}'] = value
         
         # Create a simple response collector
@@ -62,8 +62,12 @@ def handler(request, response):
             headers.extend(response_headers)
         
         # Call Django application
-        response_body = application(environ, start_response)
-        body.extend(response_body)
+        try:
+            response_body = application(environ, start_response)
+            body.extend(response_body)
+        except Exception as e:
+            print(f"Error calling Django app: {e}")
+            raise
         
         # Set Vercel response
         if status:
