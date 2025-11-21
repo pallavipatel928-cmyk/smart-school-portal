@@ -2,7 +2,7 @@
   "version": 2,
   "builds": [
     {
-      "src": "api/index.py",
+      "src": "vercel_app.py",
       "use": "@vercel/python",
       "config": {
         "runtime": "python3.9",
@@ -12,12 +12,8 @@
   ],
   "routes": [
     {
-      "src": "/api(/.*)?",
-      "dest": "api/index.py"
-    },
-    {
       "src": "/(.*)",
-      "dest": "api/index.py"
+      "dest": "vercel_app.py"
     }
   ]
 }
