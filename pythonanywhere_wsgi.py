@@ -1,24 +1,25 @@
-# +++++++++++ DJANGO +++++++++++
+"""
+WSGI config for Smart School Portal on PythonAnywhere
+"""
 import os
 import sys
+from pathlib import Path
 
 # Add your project directory to the sys.path
-project_home = '/home/yourusername/smart-school-portal'
-if project_home not in sys.path:
-    sys.path.insert(0, project_home)
+project_dir = Path(__file__).resolve().parent
+if str(project_dir) not in sys.path:
+    sys.path.insert(0, str(project_dir))
 
-# Set environment variable
-os.environ['DJANGO_SETTINGS_MODULE'] = 'core.settings'
+# Set environment variable to indicate PythonAnywhere deployment
+os.environ.setdefault('PYTHONANYWHERE', '1')
 
-# Activate your virtual env
-activate_this = '/home/yourusername/.virtualenvs/schoolportal/bin/activate_this.py'
-if os.path.exists(activate_this):
-    exec(open(activate_this).read(), {'__file__': activate_this})
+# Set the Django settings module
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'core.settings')
 
-# Import Django
+# Import and initialize Django
 import django
-from django.core.wsgi import get_wsgi_application
-from django.contrib.staticfiles.handlers import StaticFilesHandler
-
 django.setup()
-application = StaticFilesHandler(get_wsgi_application())
+
+# Import the WSGI application
+from django.core.wsgi import get_wsgi_application
+application = get_wsgi_application()

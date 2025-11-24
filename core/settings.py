@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 import os
 from pathlib import Path
+import dj_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -79,22 +80,22 @@ WSGI_APPLICATION = 'core.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-# Production/Render environment configuration
-if 'RENDER' in os.environ:
-    # Use SQLite for Render (can be upgraded to PostgreSQL later)
+# Vercel/Production environment configuration
+if 'VERCEL' in os.environ:
+    # Use PostgreSQL for Vercel
+    DATABASES = {
+        'default': dj_database_url.config(
+            default='postgres://localhost:5432/smartschool_db',
+            conn_max_age=600
+        )
+    }
+else:
+    # SQLite (Default - for development)
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
             'NAME': BASE_DIR / 'db.sqlite3',
         }
-    }
-else:
-    # SQLite (Default - for development)
-    DATABASES = {
-        'default': dj_database_url.config(
-            default=f'sqlite:///{BASE_DIR / "db.sqlite3"}',
-            conn_max_age=600
-        )
     }
 
 # MySQL Configuration (Uncomment to use MySQL)

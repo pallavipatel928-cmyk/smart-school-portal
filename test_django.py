@@ -1,3 +1,6 @@
+"""
+Test Django setup for Vercel deployment
+"""
 import os
 import sys
 from pathlib import Path
@@ -6,8 +9,9 @@ from pathlib import Path
 project_dir = Path(__file__).resolve().parent
 sys.path.insert(0, str(project_dir))
 
-# Set Django settings module
+# Configure Django settings
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'core.settings')
+os.environ.setdefault('VERCEL', '1')
 
 try:
     import django

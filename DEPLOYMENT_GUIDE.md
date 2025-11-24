@@ -21,7 +21,7 @@ This guide will help you deploy your Smart School Management Portal to various p
 ### 1. **Update Requirements**
 Your `requirements.txt` is already updated with deployment packages:
 ```
-Django==5.2.8
+Django==4.2.7
 djangorestframework==3.14.0
 Pillow==10.1.0
 gunicorn==21.2.0

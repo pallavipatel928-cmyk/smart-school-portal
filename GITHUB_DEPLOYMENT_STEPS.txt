@@ -1,208 +1,55 @@
-═══════════════════════════════════════════════════════════
-   SMART SCHOOL PORTAL - GITHUB DEPLOYMENT GUIDE
-═══════════════════════════════════════════════════════════
+# GitHub Deployment Steps for Smart School Portal
 
-Follow these steps carefully to deploy your project to GitHub:
-
-═══════════════════════════════════════════════════════════
-STEP 1: INSTALL GIT (If not already installed)
-═══════════════════════════════════════════════════════════
-
-1. Download Git for Windows:
-   https://git-scm.com/download/win
-
-2. Run the installer
-   - Click "Next" for all default options
-   - Complete installation
-
-3. Restart your terminal/command prompt
-
-4. Verify Git installation:
-   Open PowerShell and run:
-   git --version
-
-═══════════════════════════════════════════════════════════
-STEP 2: CREATE GITHUB ACCOUNT (If you don't have one)
-═══════════════════════════════════════════════════════════
-
-1. Go to: https://github.com
-2. Click "Sign up"
-3. Create your account with:
-   - Email address
-   - Password
-   - Username
-4. Verify your email
-
-═══════════════════════════════════════════════════════════
-STEP 3: CONFIGURE GIT (First time only)
-═══════════════════════════════════════════════════════════
-
-Open PowerShell in your project folder and run:
-
-git config --global user.name "Your Name"
-git config --global user.email "your-email@example.com"
-
-Replace "Your Name" and email with your actual information.
-
-═══════════════════════════════════════════════════════════
-STEP 4: INITIALIZE GIT REPOSITORY
-═══════════════════════════════════════════════════════════
-
-In PowerShell (in project folder):
-
-git init
-
-This creates a .git folder (hidden) in your project.
-
-═══════════════════════════════════════════════════════════
-STEP 5: ADD ALL FILES TO GIT
-═══════════════════════════════════════════════════════════
-
-git add .
-
-This stages all files for commit.
-
-═══════════════════════════════════════════════════════════
-STEP 6: COMMIT YOUR CODE
-═══════════════════════════════════════════════════════════
-
-git commit -m "Initial commit - Smart School Portal"
-
-This saves your changes with a message.
-
-═══════════════════════════════════════════════════════════
-STEP 7: CREATE GITHUB REPOSITORY
-═══════════════════════════════════════════════════════════
-
-1. Go to: https://github.com/new
-
-2. Fill in repository details:
-   - Repository name: smart-school-portal
-   - Description: Django School Management System
-   - Public or Private: Choose your preference
-   - DO NOT check "Initialize with README" (we already have one)
-
-3. Click "Create repository"
-
-═══════════════════════════════════════════════════════════
-STEP 8: CONNECT LOCAL REPO TO GITHUB
-═══════════════════════════════════════════════════════════
-
-After creating the repository, GitHub will show commands.
-Copy the repository URL (looks like):
-https://github.com/YOUR_USERNAME/smart-school-portal.git
-
-In PowerShell, run:
-
-git remote add origin https://github.com/YOUR_USERNAME/smart-school-portal.git
-
-Replace YOUR_USERNAME with your actual GitHub username.
-
-═══════════════════════════════════════════════════════════
-STEP 9: RENAME BRANCH TO MAIN (If needed)
-═══════════════════════════════════════════════════════════
-
-git branch -M main
-
-═══════════════════════════════════════════════════════════
-STEP 10: PUSH CODE TO GITHUB
-═══════════════════════════════════════════════════════════
-
-git push -u origin main
-
-You may be asked to login to GitHub:
-- Enter your GitHub username
-- Enter your GitHub password (or Personal Access Token)
-
-Note: GitHub no longer accepts passwords for command line.
-You need to create a Personal Access Token:
-
-1. Go to: https://github.com/settings/tokens
-2. Click "Generate new token" → "Generate new token (classic)"
-3. Give it a name: "Smart School Portal"
-4. Select scopes: Check "repo" (all options under it)
-5. Click "Generate token"
-6. COPY THE TOKEN (you won't see it again!)
-7. Use this token as password when pushing
-
-═══════════════════════════════════════════════════════════
-STEP 11: VERIFY DEPLOYMENT
-═══════════════════════════════════════════════════════════
-
-1. Go to: https://github.com/YOUR_USERNAME/smart-school-portal
-2. You should see all your project files
-3. README.md will be displayed on the repository page
-
-═══════════════════════════════════════════════════════════
-COMPLETE COMMANDS SUMMARY
-═══════════════════════════════════════════════════════════
-
-Here are all commands in order:
-
-cd c:\Users\PALLAVI\OneDrive\Desktop\project2
+## Step 1: Initialize Git Repository
 git init
 git add .
-git commit -m "Initial commit - Smart School Portal"
-git branch -M main
+git commit -m "Initial commit - Smart School Management Portal"
+
+## Step 2: Create GitHub Repository
+1. Go to https://github.com/
+2. Click "New" repository
+3. Name it: smart-school-portal
+4. Don't initialize with README
+5. Click "Create repository"
+
+## Step 3: Push to GitHub
 git remote add origin https://github.com/YOUR_USERNAME/smart-school-portal.git
+git branch -M main
 git push -u origin main
 
-═══════════════════════════════════════════════════════════
-FUTURE UPDATES
-═══════════════════════════════════════════════════════════
+## Step 4: Add .gitignore
+echo "venv/" > .gitignore
+echo "*.pyc" >> .gitignore
+echo "__pycache__/" >> .gitignore
+echo "db.sqlite3" >> .gitignore
+echo "*.log" >> .gitignore
+echo ".env" >> .gitignore
+echo "media/" >> .gitignore
 
-When you make changes to your project:
+git add .gitignore
+git commit -m "Add .gitignore"
+git push
 
-1. Add changes:
-   git add .
+## Step 5: Deploy to Vercel
+1. Go to https://vercel.com/
+2. Sign up with GitHub
+3. Import your GitHub repository
+4. Configure project:
+   - Framework Preset: Other
+   - Root Directory: ./
+   - Build Command: pip install -r requirements.txt && python manage.py collectstatic --noinput
+   - Output Directory: staticfiles
+   - Install Command: pip install -r requirements.txt
+5. Add Environment Variables:
+   - SECRET_KEY: your-secret-key-here
+   - DEBUG: False
+   - ALLOWED_HOSTS: .vercel.app
+6. Deploy!
 
-2. Commit changes:
-   git commit -m "Description of changes"
-
-3. Push to GitHub:
-   git push
-
-═══════════════════════════════════════════════════════════
-TROUBLESHOOTING
-═══════════════════════════════════════════════════════════
-
-Error: "git is not recognized"
-Solution: Install Git and restart terminal
-
-Error: "Authentication failed"
-Solution: Use Personal Access Token instead of password
-
-Error: "Repository already exists"
-Solution: Use a different repository name
-
-Error: "Permission denied"
-Solution: Check your GitHub credentials
-
-═══════════════════════════════════════════════════════════
-NEXT STEPS AFTER GITHUB DEPLOYMENT
-═══════════════════════════════════════════════════════════
-
-1. Deploy to Live Server (Render/Heroku):
-   - See DEPLOYMENT_GUIDE.md
-   - Follow instructions for your chosen platform
-
-2. Share your project:
-   - Send GitHub link to others
-   - Others can clone and run your project
-
-3. Collaborate:
-   - Accept pull requests
-   - Manage issues
-   - Track project progress
-
-═══════════════════════════════════════════════════════════
-YOUR PROJECT IS READY FOR GITHUB!
-═══════════════════════════════════════════════════════════
-
-All files are prepared. Just follow the steps above!
-
-Questions? Check:
-- GitHub Docs: https://docs.github.com
-- Git Tutorial: https://git-scm.com/doc
-
-Good luck! 🚀
+## Step 6: Run Migrations
+After deployment, go to Vercel dashboard:
+1. Go to your project
+2. Click on "Functions" tab
+3. Find your function and click on it
+4. Go to "Logs" tab
+5. You may need to run migrations manually through Vercel's shell or configure a build script
